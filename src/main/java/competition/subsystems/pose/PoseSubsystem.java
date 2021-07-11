@@ -19,15 +19,16 @@ public class PoseSubsystem extends BasePoseSubsystem {
         this.drive = drive;
     }
 
-
     @Override
     protected double getLeftDriveDistance() {
-        return drive.getLeftTotalDistance();
+        // TODO: return drive.getLeftTotalDistance();
+        return 0;
     }
 
     @Override
     protected double getRightDriveDistance() {
-        return drive.getRightTotalDistance();
+        // TODO: return drive.getRightTotalDistance();
+        return 0;
     }
 
 }

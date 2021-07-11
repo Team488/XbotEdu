@@ -2,33 +2,45 @@ package competition.subsystems.drive.commands;
 
 import com.google.inject.Inject;
 
+import xbot.common.command.BaseCommand;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.DriveSubsystem;
-import xbot.common.command.BaseCommand;
-import xbot.common.math.MathUtils;
+
+//This first exercise is mostly completed for you. Take your time to read through it,
+// review all the comments, and then complete it by adding in a bit more code of your own.
 
 public class TankDriveWithJoysticksCommand extends BaseCommand {
 
-    final DriveSubsystem driveSubsystem;
-    final OperatorInterface oi;
+    DriveSubsystem drive;
+    OperatorInterface operate;
 
     @Inject
-    public TankDriveWithJoysticksCommand(OperatorInterface oi, DriveSubsystem driveSubsystem) {
-        this.oi = oi;
-        this.driveSubsystem = driveSubsystem;
-        this.addRequirements(this.driveSubsystem);
+    public TankDriveWithJoysticksCommand(DriveSubsystem driveSubsystem, OperatorInterface oi) {
+        drive = driveSubsystem;
+        operate = oi;
+        this.requires(drive);
     }
 
     @Override
     public void initialize() {
-        log.info("Initializing");
+        // This code is run one time, right when the command is started.
+        // You don't need to write any code here for this exercise.
     }
 
     @Override
     public void execute() {
-        driveSubsystem.tankDrive(
-            MathUtils.deadband(oi.gamepad.getLeftVector().y, 0.15), 
-            MathUtils.deadband(oi.gamepad.getRightVector().y, 0.15)
-        );
+        // You need to get values from the joysticks and pass them into the motors.
+
+        // Get values from the joysticks:
+        // Here's how to get how far the left joystick's Y-axis is pushed:
+        double leftValue = operate.gamepad.getLeftVector().y;
+        // You'll need to get how far the RIGHT joystick's Y-axis is pushed as well.
+
+        // Pass values into the DriveSubsystem so it can control motors:
+        // right now, this just sends the left power to the left part of the drive.
+        // You'll
+        // need to give it a right power as well.
+        drive.tankDrive(leftValue, 0);
     }
+
 }

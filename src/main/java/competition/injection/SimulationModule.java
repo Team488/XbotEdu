@@ -20,6 +20,5 @@ public class SimulationModule extends SimulatorModule {
         super.configure();
         this.bind(ElectricalContract.class).to(CompetitionContract.class);
         this.bind(BasePoseSubsystem.class).to(CompetitionModule.CHOSEN_POSE_SUBSYSTEM);
-        this.bind(BaseDriveSubsystem.class).to(CompetitionModule.CHOSEN_DRIVE_SUBSYSTEM);
     }
 }

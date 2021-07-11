@@ -14,7 +14,6 @@ public class CompetitionModule extends RobotModule {
     boolean isPractice;
 
     public static final Class<PoseSubsystem> CHOSEN_POSE_SUBSYSTEM = PoseSubsystem.class;
-    public static final Class<DriveSubsystem> CHOSEN_DRIVE_SUBSYSTEM = DriveSubsystem.class;
     
     public CompetitionModule(boolean isPractice) {
         this.isPractice = isPractice;
@@ -30,7 +29,6 @@ public class CompetitionModule extends RobotModule {
         }
         
         this.bind(BasePoseSubsystem.class).to(CHOSEN_POSE_SUBSYSTEM);
-        this.bind(BaseDriveSubsystem.class).to(CHOSEN_DRIVE_SUBSYSTEM);
 
     }
 }
