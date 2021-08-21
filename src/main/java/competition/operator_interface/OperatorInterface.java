@@ -18,7 +18,7 @@ public class OperatorInterface {
     @Inject
     public OperatorInterface(CommonLibFactory factory, RobotAssertionManager assertionManager) {
         gamepad = factory.createXboxController(0);
-        gamepad.setLeftInversion(false, true);
+        gamepad.setLeftInversion(true, true);
         gamepad.setRightInversion(true, true);
     }
 }

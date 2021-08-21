@@ -48,6 +48,16 @@ public class BaseDriveTest extends BaseCompetitionTest {
         assertTrue(drive.frontLeft.getMotorOutputPercent() > drive.frontRight.getMotorOutputPercent());
     }
 
+    public void assertGoingForward() {
+        // right + left > 0
+        assertTrue((drive.frontLeft.getMotorOutputPercent() + drive.frontRight.getMotorOutputPercent()) > 0);
+    }
+
+    public void assertGoingBackward() {
+        // right + left > 0
+        assertTrue((drive.frontLeft.getMotorOutputPercent() + drive.frontRight.getMotorOutputPercent()) < 0);
+    }
+
     public void setPosition(double position) {
         ((MockCANTalon)drive.frontRight).setPosition(position / pose.scalingFactorFromTicksToInches);
         ((MockCANTalon)drive.frontLeft).setPosition(position / pose.scalingFactorFromTicksToInches);

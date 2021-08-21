@@ -24,4 +24,13 @@ public class CommandA extends BaseCommand {
          exampleSubsystem.writeMessage("CommandA is the best.");
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        if (interrupted) {
+            log.info("Something just interrupted CommandA! Oh noooooo... *dies*");
+        } else {
+            log.info("CommandA ending gracefully.");
+        }
+    }
+
 }
