@@ -29,8 +29,8 @@ jobs:
       inputs:
         gradleWrapperFile: 'gradlew'
         gradleOptions: '-Xmx3072m'
-        publishJUnitResults: true
-        testResultsFiles: '**/TEST-*.xml'
+        publishJUnitResults: false
+        # testResultsFiles: '**/TEST-*.xml'
         tasks: 'build --stacktrace --info -x test'
         # checkStyleRunAnalysis: true
         # pmdRunAnalysis: true
