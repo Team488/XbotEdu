@@ -62,6 +62,11 @@ public class RotationVisualizationPanel extends JPanel {
         drawVector(graphics,
                 XYPair.fromPolar(-envState.currentOrientation - 90, envState.currentVelocity / 30 * baseMagnitude),
                 currentOrientationVector.scale(0.5));
+
+        graphics.setColor(Color.BLACK);
+        graphics.setStroke(new BasicStroke(5));
+        graphics.drawString("Heading:" + String.format("%.1f", envState.currentOrientation) + "°", centerX+25, centerY+50);
+        graphics.drawString("Speed:" + String.format("%.1f", envState.currentVelocity) + "°/t", centerX+25, centerY+50+g.getFontMetrics().getHeight());
     }
 
     private Color getColorForEnvState() {
