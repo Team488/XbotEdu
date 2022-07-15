@@ -4,7 +4,30 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "type": "java",
+      "name": "Launch RotationTestVisualizer",
+      "request": "launch",
+      "mainClass": "xbot.edubot.rotation.RotationTestVisualizer",
+      "projectName": "XbotEdu2",
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
+      },
+      "cwd": "${workspaceFolder}/build/jni/release",
+    },
+    {
+      "type": "java",
+      "name": "Launch LinearTestVisualizer",
+      "request": "launch",
+      "mainClass": "xbot.edubot.linear.LinearTestVisualizer",
+      "projectName": "XbotEdu2",
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
+      },
+      "cwd": "${workspaceFolder}/build/jni/release",
+    },
     {
       "type": "wpilib",
       "name": "WPILib Desktop Debug",
