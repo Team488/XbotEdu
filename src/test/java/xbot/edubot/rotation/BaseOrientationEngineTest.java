@@ -111,7 +111,7 @@ public class BaseOrientationEngineTest extends BaseDriveTest {
 
     protected void assertRotationTarget(RotationEngine engine, double targetHeading) {
         assertEquals("Make sure robot is close to target position within " + POSITION_ERROR_THRESHOLD, targetHeading,
-                pose.getCurrentHeading().getValue(), POSITION_ERROR_THRESHOLD);
+                pose.getCurrentHeading().getDegrees(), POSITION_ERROR_THRESHOLD);
         assertEquals("Make sure robot has come to a stop, not just flying past the target position.", 0.0,
                 engine.getVelocity(), VELOCITY_ERROR_THRESHOLD);
     }
