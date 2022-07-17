@@ -99,7 +99,9 @@ public class RotationTestVisualizer {
             case GO_LEFT_90_FROM_NEG_90:
                 currentTestEnvironment = new TurnLeft90DegreesCommandTest();
                 break;
-            case ROTATE_TO_ORIENTATION:
+            case ROTATE_TO_ORIENTATION_0_150:
+            case ROTATE_TO_ORIENTATION_0_NEG_150:
+            case ROTATE_TO_ORIENTATION_NEG_90_150:
                 currentTestEnvironment = new GoToOrientationTest();
                 break;
             default:
@@ -130,7 +132,9 @@ public class RotationTestVisualizer {
         GO_LEFT_90_FROM_NEG_90,
         GO_LEFT_90_FROM_NEG_150,
         GO_LEFT_90_FROM_150,
-        ROTATE_TO_ORIENTATION
+        ROTATE_TO_ORIENTATION_0_150,
+        ROTATE_TO_ORIENTATION_0_NEG_150,
+        ROTATE_TO_ORIENTATION_NEG_90_150,
     }
     
     public static interface SelectableOrientationTest {
