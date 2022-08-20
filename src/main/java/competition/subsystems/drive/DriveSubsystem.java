@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
-import scala.NotImplementedError;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
@@ -73,7 +72,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
-       throw new NotImplementedError();
+       throw new RuntimeException("Not yet implemented");
     }
 
     @Override

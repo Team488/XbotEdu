@@ -3,10 +3,10 @@ package xbot.edubot.basic_understanding;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import competition.BaseCompetitionTest;
 import xbot.common.command.XScheduler;
-import xbot.common.injection.BaseCommonLibTest;
 
-public class CObserveFightingCommands extends BaseCommonLibTest {
+public class CObserveFightingCommands extends BaseCompetitionTest {
     
     protected Logger log;
     
