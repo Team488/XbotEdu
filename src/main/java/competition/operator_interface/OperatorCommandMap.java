@@ -1,7 +1,7 @@
 package competition.operator_interface;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 

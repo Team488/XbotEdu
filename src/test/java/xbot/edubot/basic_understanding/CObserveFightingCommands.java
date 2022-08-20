@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import xbot.common.command.XScheduler;
-import xbot.common.injection.BaseWPITest;
+import xbot.common.injection.BaseCommonLibTest;
 
-public class CObserveFightingCommands extends BaseWPITest{
+public class CObserveFightingCommands extends BaseCommonLibTest {
     
     protected Logger log;
     
