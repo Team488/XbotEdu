@@ -96,8 +96,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
         
         setPosition(0);
         
-        DriveToPositionCommand command = 
-                injector.getInstance(DriveToPositionCommand.class);
+        DriveToPositionCommand command = new DriveToPositionCommand(this.drive, this.pose);
         command.setTargetPosition(target_distance);
         
         command.initialize();

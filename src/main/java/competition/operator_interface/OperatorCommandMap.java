@@ -11,6 +11,9 @@ import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 @Singleton
 public class OperatorCommandMap {
     
+    @Inject
+    public OperatorCommandMap() {}
+
     // Example for setting up a command to fire when a button is pressed:
     @Inject
     public void setupMyCommands(

@@ -14,8 +14,9 @@ public class CObserveFightingCommands extends BaseCommonLibTest {
     public void watchCommandsFight() {
         log = Logger.getLogger(CObserveFightingCommands.class);
         
-        CommandA cmda = injector.getInstance(CommandA.class);
-        CommandB cmdb = injector.getInstance(CommandB.class);
+        ExampleSubsystem subsystem = new ExampleSubsystem();
+        CommandA cmda = new CommandA(subsystem);
+        CommandB cmdb = new CommandB(subsystem);
 
         cmda.setRunsWhenDisabled(true);
         cmdb.setRunsWhenDisabled(true);
@@ -23,7 +24,7 @@ public class CObserveFightingCommands extends BaseCommonLibTest {
         // CommandA starts. 
         cmda.schedule();
         
-        XScheduler scheduler = injector.getInstance(XScheduler.class);
+        XScheduler scheduler = new XScheduler();
         
         for (int i = 0; i < 5; i++) {
             log.info("SCHEDULER ON STEP " + i);

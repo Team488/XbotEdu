@@ -14,10 +14,10 @@ public class BObserveChatter extends BaseCommonLibTest {
     public void watchChatter() {
         log = Logger.getLogger(BObserveChatter.class);
         
-        ChatCommandThatEnds cmd = injector.getInstance(ChatCommandThatEnds.class);
+        ChatCommandThatEnds cmd = new ChatCommandThatEnds();
         cmd.setRunsWhenDisabled(true);
         cmd.schedule();
-        XScheduler scheduler = injector.getInstance(XScheduler.class);
+        XScheduler scheduler = new XScheduler();
         
         for (int i = 0; i < 100; i++) {
             

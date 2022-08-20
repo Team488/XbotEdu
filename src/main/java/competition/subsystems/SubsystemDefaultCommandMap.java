@@ -11,6 +11,9 @@ public class SubsystemDefaultCommandMap {
     // For setting the default commands on subsystems
 
     @Inject
+    public SubsystemDefaultCommandMap() {}
+
+    @Inject
     public void setupDriveSubsystem(DriveSubsystem driveSubsystem, TankDriveWithJoysticksCommand command) {
         driveSubsystem.setDefaultCommand(command);
     }
