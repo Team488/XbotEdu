@@ -11,7 +11,7 @@ public class GoToOrientationTest extends BaseOrientationEngineTest implements Se
 
     @Test
     public void testGoToOrientation0to150() {
-        DriveToOrientationCommand command = new DriveToOrientationCommand(this.drive);
+        DriveToOrientationCommand command = injector.getInstance(DriveToOrientationCommand.class);
         command.setTargetHeading(150);
 
         setUpTestEnvironment(command, 0, 150);
@@ -20,7 +20,7 @@ public class GoToOrientationTest extends BaseOrientationEngineTest implements Se
 
     @Test
     public void testGoToOrientation0toNeg150() {
-        DriveToOrientationCommand command = new DriveToOrientationCommand(this.drive);
+        DriveToOrientationCommand command = injector.getInstance(DriveToOrientationCommand.class);
         command.setTargetHeading(-150);
 
         setUpTestEnvironment(command, 0, -150);
@@ -29,7 +29,7 @@ public class GoToOrientationTest extends BaseOrientationEngineTest implements Se
 
     @Test
     public void testGoToOrientationNeg90to150() {
-        DriveToOrientationCommand command = new DriveToOrientationCommand(this.drive);
+        DriveToOrientationCommand command = injector.getInstance(DriveToOrientationCommand.class);
         command.setTargetHeading(150);
 
         setUpTestEnvironment(command, -90, 150);

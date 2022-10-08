@@ -1,14 +1,13 @@
 
 package competition;
 
-import competition.injection.components.BaseRobotComponent;
-import competition.injection.components.DaggerRobotComponent;
-import competition.injection.components.DaggerSimulationComponent;
+import competition.injection.CompetitionModule;
+import competition.injection.SimulationModule;
 import competition.operator_interface.OperatorCommandMap;
+import competition.subsystems.SubsystemDefaultCommandMap;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import xbot.common.command.BaseRobot;
-import xbot.common.injection.components.BaseComponent;
 import xbot.common.math.FieldPose;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -17,20 +16,17 @@ public class Robot extends BaseRobot {
     @Override
     protected void initializeSystems() {
         super.initializeSystems();
-        getInjectorComponent().subsystemDefaultCommandMap();
-        getInjectorComponent().operatorCommandMap();
+        this.injector.getInstance(SubsystemDefaultCommandMap.class);
+        this.injector.getInstance(OperatorCommandMap.class);
     }
 
-    protected BaseRobotComponent createDaggerComponent() {
+    @Override
+    protected void setupInjectionModule() {
         if (BaseRobot.isReal()) {
-            return DaggerRobotComponent.create();
+            this.injectionModule = new CompetitionModule(true);
         } else {
-            return DaggerSimulationComponent.create();
+            this.injectionModule = new SimulationModule();
         }
-    }
-
-    public BaseRobotComponent getInjectorComponent() {
-        return (BaseRobotComponent)super.getInjectorComponent();
     }
 
     @Override

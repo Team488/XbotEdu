@@ -1,6 +1,6 @@
 package competition.subsystems.drive.commands;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 import xbot.common.command.BaseCommand;
 import competition.subsystems.drive.DriveSubsystem;

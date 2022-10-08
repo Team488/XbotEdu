@@ -1,6 +1,6 @@
 package xbot.edubot.basic_understanding;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 import xbot.common.command.BaseCommand;
 

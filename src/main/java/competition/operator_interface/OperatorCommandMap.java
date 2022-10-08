@@ -1,7 +1,7 @@
 package competition.operator_interface;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
@@ -11,9 +11,6 @@ import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 @Singleton
 public class OperatorCommandMap {
     
-    @Inject
-    public OperatorCommandMap() {}
-
     // Example for setting up a command to fire when a button is pressed:
     @Inject
     public void setupMyCommands(

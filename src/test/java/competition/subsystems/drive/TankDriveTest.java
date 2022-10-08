@@ -10,7 +10,7 @@ public class TankDriveTest extends BaseDriveTest {
 
     @Test
     public void test() {
-        final BaseCommand command = new TankDriveWithJoysticksCommand(this.drive, this.oi);
+        final BaseCommand command = injector.getInstance(TankDriveWithJoysticksCommand.class);
 
         // Call the TankDriveWithJoysticksCommand initialize once
         command.initialize();
