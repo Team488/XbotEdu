@@ -14,9 +14,9 @@ public class DriveForTimeCommandTest extends BaseDriveTest {
     @Test
     public void test() {
 
-        BaseCommand command = injector.getInstance(DriveForTimeCommand.class);
+        BaseCommand command = new DriveForTimeCommand();
 
-        MockTimer timer = injector.getInstance(MockTimer.class);
+        MockTimer timer = (MockTimer)this.getInjectorComponent().timerImplementation();
 
         command.initialize();
 

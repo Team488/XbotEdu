@@ -1,6 +1,6 @@
 package xbot.edubot.basic_understanding;
 
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
 
 import xbot.common.command.BaseSubsystem;
 

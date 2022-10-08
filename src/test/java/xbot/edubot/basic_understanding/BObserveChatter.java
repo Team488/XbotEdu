@@ -3,10 +3,10 @@ package xbot.edubot.basic_understanding;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import competition.BaseCompetitionTest;
 import xbot.common.command.XScheduler;
-import xbot.common.injection.BaseWPITest;
 
-public class BObserveChatter extends BaseWPITest{
+public class BObserveChatter extends BaseCompetitionTest {
     
     protected Logger log;
     
@@ -14,10 +14,10 @@ public class BObserveChatter extends BaseWPITest{
     public void watchChatter() {
         log = Logger.getLogger(BObserveChatter.class);
         
-        ChatCommandThatEnds cmd = injector.getInstance(ChatCommandThatEnds.class);
+        ChatCommandThatEnds cmd = new ChatCommandThatEnds();
         cmd.setRunsWhenDisabled(true);
         cmd.schedule();
-        XScheduler scheduler = injector.getInstance(XScheduler.class);
+        XScheduler scheduler = new XScheduler();
         
         for (int i = 0; i < 100; i++) {
             

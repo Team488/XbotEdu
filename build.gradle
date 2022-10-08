@@ -63,7 +63,8 @@ repositories {
     jcenter()
     
     maven {
-        url "https://mvnrepository.com/artifact/com.google.inject/guice"
+        url "https://mvnrepository.com/artifact/com.google.dagger/dagger"
+        url "https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler"
         url "https://first.wpi.edu/FRC/roborio/maven/release"
         url "https://devsite.ctr-electronics.com/maven/release/"
     }
@@ -104,10 +105,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation "xbot.common:scl"
-    implementation group: 'com.google.inject', name: 'guice', version: '4.2.2'
-    implementation group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '4.2.2'
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
     implementation group: 'org.json', name:'json', version: '20201115'
+
+    implementation 'com.google.dagger:dagger:2.43.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
 }
 
 wpi.sim.addGui().defaultEnabled = true
@@ -145,6 +148,9 @@ task('copyResources') {
         }
     }
 }
+
+sourceSets.main.java.srcDirs += "build/generated/sources/annotationProcessor/java/main"
+sourceSets.test.java.srcDirs += "build/generated/sources/annotationProcessor/java/test"
 
 checkstyle {
     toolVersion = '8.7'

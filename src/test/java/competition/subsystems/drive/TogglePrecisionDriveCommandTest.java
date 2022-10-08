@@ -2,7 +2,6 @@ package competition.subsystems.drive;
 
 import org.junit.Test;
 
-import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.commands.TankDriveWithJoysticksCommand;
 import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
 import xbot.common.command.BaseCommand;
@@ -12,9 +11,6 @@ public class TogglePrecisionDriveCommandTest extends BaseDriveTest {
 
     @Test
     public void test() {
-        DriveSubsystem drive = this.injector.getInstance(DriveSubsystem.class);
-        OperatorInterface oi = this.injector.getInstance(OperatorInterface.class);
-
         BaseCommand driveCommand = new TankDriveWithJoysticksCommand(drive, oi);
         BaseCommand togglePrecisionCommand = new TogglePrecisionDriveCommand(drive);
 

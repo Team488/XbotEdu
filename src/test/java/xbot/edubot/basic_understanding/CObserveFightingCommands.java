@@ -3,10 +3,10 @@ package xbot.edubot.basic_understanding;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import competition.BaseCompetitionTest;
 import xbot.common.command.XScheduler;
-import xbot.common.injection.BaseWPITest;
 
-public class CObserveFightingCommands extends BaseWPITest{
+public class CObserveFightingCommands extends BaseCompetitionTest {
     
     protected Logger log;
     
@@ -14,8 +14,9 @@ public class CObserveFightingCommands extends BaseWPITest{
     public void watchCommandsFight() {
         log = Logger.getLogger(CObserveFightingCommands.class);
         
-        CommandA cmda = injector.getInstance(CommandA.class);
-        CommandB cmdb = injector.getInstance(CommandB.class);
+        ExampleSubsystem subsystem = new ExampleSubsystem();
+        CommandA cmda = new CommandA(subsystem);
+        CommandB cmdb = new CommandB(subsystem);
 
         cmda.setRunsWhenDisabled(true);
         cmdb.setRunsWhenDisabled(true);
@@ -23,7 +24,7 @@ public class CObserveFightingCommands extends BaseWPITest{
         // CommandA starts. 
         cmda.schedule();
         
-        XScheduler scheduler = injector.getInstance(XScheduler.class);
+        XScheduler scheduler = new XScheduler();
         
         for (int i = 0; i < 5; i++) {
             log.info("SCHEDULER ON STEP " + i);
