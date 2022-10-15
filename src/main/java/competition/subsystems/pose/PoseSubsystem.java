@@ -1,10 +1,10 @@
 package competition.subsystems.pose;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
-import xbot.common.injection.wpi_factories.CommonLibFactory;
+import xbot.common.controls.sensors.XGyro.XGyroFactory;
 import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
@@ -14,10 +14,10 @@ public class PoseSubsystem extends BasePoseSubsystem {
     private final DriveSubsystem drive;
 
     public double scalingFactorFromTicksToInches = 1.0 / 256.0;
-
+    
     @Inject
-    public PoseSubsystem(CommonLibFactory clf, PropertyFactory propManager, DriveSubsystem drive) {
-        super(clf, propManager);
+    public PoseSubsystem(XGyroFactory gyroFactory, PropertyFactory propManager, DriveSubsystem drive) {
+        super(gyroFactory, propManager);
         this.drive = drive;
     }
 

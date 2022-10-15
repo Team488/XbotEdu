@@ -22,9 +22,9 @@ public class BaseDriveTest extends BaseCompetitionTest {
     @Before
     public void setUp() {
         super.setUp();
-        drive = this.injector.getInstance(DriveSubsystem.class);
-        oi = this.injector.getInstance(OperatorInterface.class);
-        pose = this.injector.getInstance(PoseSubsystem.class);
+        drive = (DriveSubsystem)this.getInjectorComponent().driveSubsystem();
+        oi = this.getInjectorComponent().operatorInterface();
+        pose = (PoseSubsystem)this.getInjectorComponent().poseSubsystem();
         gamepad = (MockXboxControllerAdapter) oi.gamepad;
     }
 
