@@ -171,6 +171,14 @@ test {
     }               
 }
 
+// force test project in SCL to compile so Dagger generation runs
+tasks.getByName('compileTestJava') {
+    dependsOn gradle.includedBuilds*.task(':compileTestJava')
+}
+tasks.getByName('clean') {
+    dependsOn gradle.includedBuilds*.task(':clean')
+}
+
 tasks.withType(Test) {
     testLogging.showStandardStreams = true
     
