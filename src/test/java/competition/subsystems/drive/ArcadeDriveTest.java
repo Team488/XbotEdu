@@ -5,7 +5,6 @@ import org.junit.Test;
 import xbot.common.command.BaseCommand;
 import xbot.common.math.XYPair;
 import competition.operator_interface.OperatorInterface;
-import competition.subsystems.drive.commands.ArcadeDriveWithJoysticksCommand;
 import edu.wpi.first.wpilibj.MockXboxControllerAdapter;
 
 public class ArcadeDriveTest extends BaseDriveTest {
@@ -13,8 +12,7 @@ public class ArcadeDriveTest extends BaseDriveTest {
     @Test
     public void test() {
         OperatorInterface oi = this.getInjectorComponent().operatorInterface();
-
-        BaseCommand command = new ArcadeDriveWithJoysticksCommand(this.drive);
+        BaseCommand command = this.getInjectorComponent().arcadeDriveWithJoysticksCommand();
 
         MockXboxControllerAdapter left = (MockXboxControllerAdapter) oi.gamepad;
 

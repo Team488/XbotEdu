@@ -11,8 +11,8 @@ public class TogglePrecisionDriveCommandTest extends BaseDriveTest {
 
     @Test
     public void test() {
-        BaseCommand driveCommand = new TankDriveWithJoysticksCommand(drive, oi);
-        BaseCommand togglePrecisionCommand = new TogglePrecisionDriveCommand(drive);
+        BaseCommand driveCommand = this.getInjectorComponent().tankDriveWithJoysticksCommand();
+        BaseCommand togglePrecisionCommand = this.getInjectorComponent().togglePrecisionDriveCommand();
 
         driveCommand.initialize();
 

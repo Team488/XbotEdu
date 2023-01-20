@@ -47,7 +47,7 @@ public class BaseOrientationEngineTest extends BaseDriveTest {
         else if (targetYaw < -180) {
             targetYaw += 360;
         }
-        setUpTestEnvironment(new TurnLeft90DegreesCommand(this.drive, this.pose), initialYaw, targetYaw);
+        setUpTestEnvironment(this.getInjectorComponent().turnLeft90DegreesCommand(), initialYaw, targetYaw);
     }
 
     protected void runTestEnv() {

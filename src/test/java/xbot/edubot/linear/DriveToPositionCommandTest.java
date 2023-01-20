@@ -53,8 +53,8 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
     }
     
     public void vizRun() {
-        command = 
-                new DriveToPositionCommand(this.drive, this.pose);
+        command = this.getInjectorComponent().driveToPositionCommand();
+
         command.setTargetPosition(target_distance);
                 
         command.initialize();
