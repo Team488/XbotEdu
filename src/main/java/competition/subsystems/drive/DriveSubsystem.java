@@ -43,6 +43,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // to
         // the value of leftPower:
         frontLeft.simpleSet(leftPower);
+        frontRight.simpleSet(rightPower);
     }
     
     @Override
