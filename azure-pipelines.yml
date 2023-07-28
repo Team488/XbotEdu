@@ -25,7 +25,7 @@ jobs:
         gradleOptions: '-Xmx3072m'
         publishJUnitResults: false
         # testResultsFiles: '**/TEST-*.xml'
-        tasks: 'build --stacktrace --info -x test'
+        tasks: 'build --stacktrace --info'
         # checkStyleRunAnalysis: true
         # pmdRunAnalysis: true
     - task: PublishCodeCoverageResults@1
