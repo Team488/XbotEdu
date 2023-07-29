@@ -2,9 +2,9 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2023.1.1" 
+    id "edu.wpi.first.GradleRIO" version "2022.3.1" 
     id "eclipse"
-    id "com.diffplug.eclipse.apt" version "3.40.0"
+    id "com.diffplug.eclipse.apt" version "3.39.0"
     id 'checkstyle'
     id 'jacoco'
     id 'org.hidetake.ssh' version "2.9.0"
@@ -67,11 +67,21 @@ repositories {
     maven {
         url "https://mvnrepository.com/artifact/com.google.dagger/dagger"
         url "https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler"
+        url "https://first.wpi.edu/FRC/roborio/maven/release"
+        url "https://devsite.ctr-electronics.com/maven/release/"
     }
     
     flatDir {
        dirs 'SeriouslyCommonLib/build/libs'
    }
+}
+
+List<String> wpilibDesktopJni(String platform) {
+    return ["edu.wpi.first.thirdparty.frc2021.opencv:opencv-jni:${wpi.opencvVersion}:${platform}@jar".toString(),
+            "edu.wpi.first.hal:hal-jni:${wpi.wpilibVersion}:${platform}@jar".toString(),
+            "edu.wpi.first.wpiutil:wpiutil-jni:${wpi.wpilibVersion}:${platform}@jar".toString(),
+            "edu.wpi.first.ntcore:ntcore-jni:${wpi.wpilibVersion}:${platform}@jar".toString(),
+            "edu.wpi.first.cscore:cscore-jni:${wpi.wpilibVersion}:${platform}@jar".toString()]
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -98,11 +108,11 @@ dependencies {
 
     implementation "xbot.common:scl"
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
-    implementation group: 'org.json', name:'json', version: '20220924'
+    implementation group: 'org.json', name:'json', version: '20201115'
 
-    implementation 'com.google.dagger:dagger:2.44.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
+    implementation 'com.google.dagger:dagger:2.43.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
 }
 
 wpi.sim.addGui().defaultEnabled = true
@@ -152,27 +162,27 @@ tasks.getByName('eclipseFactorypath') {
 }
 eclipse {
 	// re-generate APT configuration on Gradle project synchronisation
-	//synchronizationTasks eclipseJdtApt, eclipseJdt, eclipseFactorypath
+	synchronizationTasks eclipseJdtApt, eclipseJdt, eclipseFactorypath
 
-	//jdt.apt {
-    //    genSrcDir = file('bin/generated/sources/annotationProcessor/java/main')
-    //    genTestSrcDir = file('bin/generated/sources/annotationProcessor/java/test')
-    //}
+	jdt.apt {
+        genSrcDir = file('bin/generated/sources/annotationProcessor/java/main')
+        genTestSrcDir = file('bin/generated/sources/annotationProcessor/java/test')
+    }
 
-    //classpath.file {
-    //    beforeMerged { classpath -> 
-    //        sourceSets.main.java.srcDirs += "bin/generated/sources/annotationProcessor/java/main"
-    //        sourceSets.test.java.srcDirs += "bin/generated/sources/annotationProcessor/java/test"
-    //    }
+    classpath.file {
+        beforeMerged { classpath -> 
+            sourceSets.main.java.srcDirs += "bin/generated/sources/annotationProcessor/java/main"
+            sourceSets.test.java.srcDirs += "bin/generated/sources/annotationProcessor/java/test"
+        }
 
-    //    whenMerged { classpath ->
-    //        classpath.entries.each { entry -> 
-    //            if (entry.path.contains('bin/generated')) {
-    //                entry.entryAttributes['ignore_optional_problems'] = true
-    //            }
-    //        }
-    //    }
-    //}
+        whenMerged { classpath ->
+            classpath.entries.each { entry -> 
+                if (entry.path.contains('bin/generated')) {
+                    entry.entryAttributes['ignore_optional_problems'] = true
+                }
+            }
+        }
+    }
 }
 
 checkstyle {
