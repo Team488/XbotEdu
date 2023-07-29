@@ -141,40 +141,6 @@ task('copyResources') {
     }
 }
 
-tasks.getByName('eclipseJdtApt') {
-    dependsOn gradle.includedBuilds*.task(':eclipseJdtApt')
-}
-tasks.getByName('eclipseJdt') {
-    dependsOn gradle.includedBuilds*.task(':eclipseJdt')
-}
-tasks.getByName('eclipseFactorypath') {
-    dependsOn gradle.includedBuilds*.task(':eclipseFactorypath')
-}
-eclipse {
-	// re-generate APT configuration on Gradle project synchronisation
-	//synchronizationTasks eclipseJdtApt, eclipseJdt, eclipseFactorypath
-
-	//jdt.apt {
-    //    genSrcDir = file('bin/generated/sources/annotationProcessor/java/main')
-    //    genTestSrcDir = file('bin/generated/sources/annotationProcessor/java/test')
-    //}
-
-    //classpath.file {
-    //    beforeMerged { classpath -> 
-    //        sourceSets.main.java.srcDirs += "bin/generated/sources/annotationProcessor/java/main"
-    //        sourceSets.test.java.srcDirs += "bin/generated/sources/annotationProcessor/java/test"
-    //    }
-
-    //    whenMerged { classpath ->
-    //        classpath.entries.each { entry -> 
-    //            if (entry.path.contains('bin/generated')) {
-    //                entry.entryAttributes['ignore_optional_problems'] = true
-    //            }
-    //        }
-    //    }
-    //}
-}
-
 checkstyle {
     toolVersion = '8.7'
     configFile = file('SeriouslyCommonLib/xbotcheckstyle.xml')
