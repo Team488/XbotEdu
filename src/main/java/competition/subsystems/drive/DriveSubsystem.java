@@ -18,6 +18,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XCANTalon frontLeft;
     public final XCANTalon frontRight;
 
+    public int precisionModifier = 1;
+
     private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
 
     @Inject
@@ -42,8 +44,14 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         // an example, here is some code that has the frontLeft motor to spin according
         // to
         // the value of leftPower:
-        frontLeft.simpleSet(leftPower);
-        frontRight.simpleSet(rightPower);
+        // So for left turn you'd want to have no left power all right power.
+        frontLeft.simpleSet(leftPower / precisionModifier);
+        frontRight.simpleSet(rightPower / precisionModifier);
+    }
+
+    public void arcadeDrive(double leftTurnValue, double forwardValue) {
+        frontLeft.simpleSet(forwardValue - leftTurnValue); // Algorithm unsure of
+        frontRight.simpleSet(forwardValue + leftTurnValue);
     }
     
     @Override
@@ -92,5 +100,13 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public double getTransverseDistance() {
         // TODO: Auto-generated method stub
         return 0;
+    }
+    public void togglePrecisionMode() {
+        if (precisionModifier == 1) {
+            precisionModifier = 2;
+        }
+        else {
+            precisionModifier = 1;
+        }
     }
 }
