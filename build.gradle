@@ -199,11 +199,6 @@ task checkstyle(type: Checkstyle) {
 }
 
 test {
-    filter {
-        includeTestsMatching "*basic_understanding*"
-        includeTestsMatching "*RobotInitTest*"
-    }
-
     reports {
         junitXml.required = true
     }               
