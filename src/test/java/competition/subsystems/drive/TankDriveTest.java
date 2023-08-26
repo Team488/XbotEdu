@@ -14,7 +14,7 @@ public class TankDriveTest extends BaseDriveTest {
 
         // Call the TankDriveWithJoysticksCommand initialize once
         command.initialize();
-
+        
         // Call execute without having moved the joysticks yet. This means the joystick
         // axes are at 0,
         // so the motors should be at 0 power (stopped).
@@ -25,7 +25,11 @@ public class TankDriveTest extends BaseDriveTest {
         // motors go to +1,
         // also knows as "full forward"
         gamepad.setLeftStick(new XYPair(0, 1.0));
+
+        
+
         gamepad.setRightStick(new XYPair(0, 1.0));
+        
         command.execute();
         assertDrive(1.0, 1.0, "Expect Motors are all forward when both joysticks are completely forward");
 

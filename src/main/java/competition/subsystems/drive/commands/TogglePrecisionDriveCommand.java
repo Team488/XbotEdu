@@ -16,6 +16,9 @@ public class TogglePrecisionDriveCommand extends BaseCommand {
 
     @Override
     public void initialize() {
+        boolean toggleValue = drive.getPrecisionMode();
+        drive.setPrecisionMode(!toggleValue);
+
         // Here, you want to call the DriveSubsystem and tell it to change its precision
         // mode.
         // This means you'll need to add a new method into DriveSubsystem, and there are
@@ -30,7 +33,13 @@ public class TogglePrecisionDriveCommand extends BaseCommand {
         // the current mode.
         // In all of these cases you'll need to have the mode somehow affect the
         // TankDrive method.
-    }
+        
+
+        
+
+        }
+
+    
 
     @Override
     public void execute() {
@@ -44,6 +53,7 @@ public class TogglePrecisionDriveCommand extends BaseCommand {
         // Commands keep running until they are finished.
         // Since we want this command to just run once (toggling precision mode), we
         // say that the command is finished right away.
+
         return true;
     }
 

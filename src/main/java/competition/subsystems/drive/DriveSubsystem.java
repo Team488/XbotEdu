@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
 import xbot.common.controls.actuators.XCANTalon;
 import xbot.common.controls.actuators.XCANTalon.XCANTalonFactory;
 import xbot.common.injection.electrical_contract.CANTalonInfo;
@@ -19,6 +20,17 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XCANTalon frontRight;
 
     private final double simulatedEncoderFactor = 256.0 * 39.3701; //256 "ticks" per meter, and ~39 inches in a meter
+
+    private boolean precisionModeOnOff = false;
+
+    public boolean getPrecisionMode() {
+        return precisionModeOnOff;
+    }
+
+    public void setPrecisionMode(boolean toggleValue) {
+        precisionModeOnOff = toggleValue;
+    }
+
 
     @Inject
     public DriveSubsystem(XCANTalonFactory talonFactory, ElectricalContract electricalContract) {
@@ -36,15 +48,37 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.register();
     }
 
+    
+    
+
+
+    
     public void tankDrive(double leftPower, double rightPower) {
         // You'll need to take these power values and assign them to all of the motors.
         // As
         // an example, here is some code that has the frontLeft motor to spin according
         // to
         // the value of leftPower:
-        frontLeft.simpleSet(leftPower);
+
+        if (precisionModeOnOff) {
+            frontLeft.simpleSet(leftPower/2);
+            frontRight.simpleSet(rightPower/2);           
+        } else {
+            frontLeft.simpleSet(leftPower);
+            frontRight.simpleSet(rightPower);            
+        }
+            
+        
+
+
+
+
     }
     
+
+   
+
+     
     @Override
     public void periodic() {
         super.periodic();

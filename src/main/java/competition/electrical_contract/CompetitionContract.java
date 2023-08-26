@@ -1,4 +1,4 @@
-package competition.electrical_contract;
+  package competition.electrical_contract;
 
 import javax.inject.Inject;
 
