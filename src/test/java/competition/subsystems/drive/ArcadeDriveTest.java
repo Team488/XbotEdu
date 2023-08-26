@@ -14,7 +14,7 @@ public class ArcadeDriveTest extends BaseDriveTest {
     public void test() {
         OperatorInterface oi = this.getInjectorComponent().operatorInterface();
 
-        BaseCommand command = new ArcadeDriveWithJoysticksCommand(this.drive);
+        BaseCommand command = this.getInjectorComponent().arcadeDriveWithJoysticksCommand();
 
         MockXboxControllerAdapter left = (MockXboxControllerAdapter) oi.gamepad;
 
