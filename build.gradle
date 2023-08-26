@@ -4,7 +4,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2023.1.1" 
     id "eclipse"
-    id "com.diffplug.eclipse.apt" version "3.40.0"
+    id "com.diffplug.eclipse.apt" version "3.42.2"
     id 'checkstyle'
     id 'jacoco'
     id 'org.hidetake.ssh' version "2.9.0"
@@ -65,18 +65,26 @@ repositories {
     jcenter()
     
     maven {
+        url 'https://pkgs.dev.azure.com/Team488/2ef6eee3-1df0-441a-9af8-5edc5c3cb203/_packaging/XBot/maven/v1'
+        name 'XBot'
+    }
+
+    maven {
         url "https://mvnrepository.com/artifact/com.google.dagger/dagger"
         url "https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler"
     }
-    
-    flatDir {
-       dirs 'SeriouslyCommonLib/build/libs'
-   }
+}
+
+configurations {
+    scl
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+    scl group: 'xbot.common', name: 'SeriouslyCommonLib', version: '20230805.4'
+    implementation configurations.scl.dependencies
+
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
@@ -96,13 +104,12 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    implementation "xbot.common:scl"
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
     implementation group: 'org.json', name:'json', version: '20220924'
 
-    implementation 'com.google.dagger:dagger:2.44.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
+    implementation 'com.google.dagger:dagger:2.47'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.47'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.47'
 }
 
 wpi.sim.addGui().defaultEnabled = true
@@ -134,38 +141,44 @@ task('copyResources') {
             session(remotes.rio) {
                 // execute 'mkdir ~/449_resources', ignoreError: true
                 // execute 'mkdir /488Logs', ignoreError: true
-                put from: fileTree('SeriouslyCommonLib/lib/log4jConfig/log4j.xml'), into: '/home/lvuser/'
+                put from: zipTree(configurations.scl.asPath).matching { include '**/log4j.xml' }, into: '/home/lvuser/'
                 //execute ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", ignoreError: true
             }
         }
     }
 }
 
+tasks.register('unpackCheckstyleConfigs', Copy) {
+    dependsOn tasks.downloadDepsPreemptively
+
+    from zipTree(configurations.scl.asPath).matching { include '*checkstyle*' }
+    into layout.buildDirectory.dir("checkstyleConfig")
+}
+
+tasks.register('configureCheckstyle') {
+    dependsOn tasks.unpackCheckstyleConfigs
+
+    doLast {
+        checkstyle.configFile = layout.buildDirectory.dir("checkstyleConfig").get().getAsFileTree().matching { include '**/xbotcheckstyle.xml' }.singleFile
+        tasks.checkstyle.configProperties.basedir = layout.buildDirectory.dir("checkstyleConfig").get().getAsFile().path
+    }
+}
+
 checkstyle {
-    toolVersion = '8.7'
-    configFile = file('SeriouslyCommonLib/xbotcheckstyle.xml')
+    toolVersion = '10.6.0'
 }
 
 task checkstyle(type: Checkstyle) {
     source 'src/main/java'
-    configProperties.basedir = file('SeriouslyCommonLib')
-    
     // Empty classpath
     classpath = files()
+    dependsOn tasks.configureCheckstyle
 }
 
 test {
     reports {
         junitXml.required = true
     }               
-}
-
-// force test project in SCL to compile so Dagger generation runs
-tasks.getByName('compileTestJava') {
-    dependsOn gradle.includedBuilds*.task(':compileTestJava')
-}
-tasks.getByName('clean') {
-    dependsOn gradle.includedBuilds*.task(':clean')
 }
 
 tasks.withType(Test) {
@@ -185,6 +198,55 @@ tasks.withType(Test) {
 jacocoTestReport {
     reports {
         xml.required = true
+    }
+}
+
+tasks.register('cleanGeneratedFiles': Delete) {
+    delete "bin/generated-sources"
+    delete "bin/generated-test-sources"
+}
+
+eclipse {
+	// re-generate APT configuration on Gradle project synchronisation
+	synchronizationTasks eclipseJdtApt, eclipseJdt, eclipseFactorypath
+
+    autoBuildTasks tasks.cleanGeneratedFiles
+    
+project {
+
+    natures "org.eclipse.buildship.core.gradleprojectnature"
+    buildCommand "org.eclipse.buildship.core.gradleprojectbuilder"
+
+    file {
+      //closure executed after .project content is loaded from existing file
+      //but before gradle build information is merged
+      beforeMerged { project ->
+        //if you want skip merging natures... (a very abstract example)
+        project.natures.clear()
+        project.buildCommands.clear()
+      }
+
+      //closure executed after .project content is loaded from existing file
+      //and after gradle build information is merged
+      whenMerged { project ->
+      }
+    }
+}
+
+    classpath {
+      file {
+            whenMerged {
+                def genSource = entries.find { it.path == 'bin/generated-sources/annotations' }
+                if (genSource) {
+                    genSource.entryAttributes['ignore_optional_problems'] = 'true'
+                }
+
+                def genTestSource = entries.find { it.path == 'bin/generated-test-sources/annotations' }
+                if (genTestSource) {
+                    genTestSource.entryAttributes['ignore_optional_problems'] = 'true'
+                }
+            }
+        }
     }
 }
 

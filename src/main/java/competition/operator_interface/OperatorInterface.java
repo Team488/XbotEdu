@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 import xbot.common.controls.sensors.XXboxController;
 import xbot.common.controls.sensors.XXboxController.XXboxControllerFactory;
 import xbot.common.logging.RobotAssertionManager;
+import xbot.common.properties.PropertyFactory;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
