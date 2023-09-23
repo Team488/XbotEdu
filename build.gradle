@@ -3,8 +3,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2022.3.1" 
-    id "eclipse"
-    id "com.diffplug.eclipse.apt" version "3.39.0"
+    id "idea"
     id 'checkstyle'
     id 'jacoco'
     id 'org.hidetake.ssh' version "2.9.0"
@@ -146,40 +145,6 @@ task('copyResources') {
                 // execute 'mkdir /488Logs', ignoreError: true
                 put from: fileTree('SeriouslyCommonLib/lib/log4jConfig/log4j.xml'), into: '/home/lvuser/'
                 //execute ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", ignoreError: true
-            }
-        }
-    }
-}
-
-tasks.getByName('eclipseJdtApt') {
-    dependsOn gradle.includedBuilds*.task(':eclipseJdtApt')
-}
-tasks.getByName('eclipseJdt') {
-    dependsOn gradle.includedBuilds*.task(':eclipseJdt')
-}
-tasks.getByName('eclipseFactorypath') {
-    dependsOn gradle.includedBuilds*.task(':eclipseFactorypath')
-}
-eclipse {
-	// re-generate APT configuration on Gradle project synchronisation
-	synchronizationTasks eclipseJdtApt, eclipseJdt, eclipseFactorypath
-
-	jdt.apt {
-        genSrcDir = file('bin/generated/sources/annotationProcessor/java/main')
-        genTestSrcDir = file('bin/generated/sources/annotationProcessor/java/test')
-    }
-
-    classpath.file {
-        beforeMerged { classpath -> 
-            sourceSets.main.java.srcDirs += "bin/generated/sources/annotationProcessor/java/main"
-            sourceSets.test.java.srcDirs += "bin/generated/sources/annotationProcessor/java/test"
-        }
-
-        whenMerged { classpath ->
-            classpath.entries.each { entry -> 
-                if (entry.path.contains('bin/generated')) {
-                    entry.entryAttributes['ignore_optional_problems'] = true
-                }
             }
         }
     }
