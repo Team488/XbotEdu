@@ -1,6 +1,7 @@
 package xbot.edubot.basic_understanding;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
@@ -12,7 +13,7 @@ public class BObserveChatter extends BaseCompetitionTest {
     
     @Test
     public void watchChatter() {
-        log = Logger.getLogger(BObserveChatter.class);
+        log = LogManager.getLogger(BObserveChatter.class);
         
         ChatCommandThatEnds cmd = new ChatCommandThatEnds();
         cmd.setRunsWhenDisabled(true);

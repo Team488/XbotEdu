@@ -1,6 +1,7 @@
 package xbot.edubot.basic_understanding;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
@@ -12,7 +13,7 @@ public class CObserveFightingCommands extends BaseCompetitionTest {
     
     @Test
     public void watchCommandsFight() {
-        log = Logger.getLogger(CObserveFightingCommands.class);
+        log = LogManager.getLogger(CObserveFightingCommands.class);
         
         ExampleSubsystem subsystem = new ExampleSubsystem();
         CommandA cmda = new CommandA(subsystem);

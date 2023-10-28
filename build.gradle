@@ -2,7 +2,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2022.3.1" 
+    id "edu.wpi.first.GradleRIO" version "2023.4.2"
     id "idea"
     id 'checkstyle'
     id 'jacoco'
@@ -63,12 +63,10 @@ repositories {
     mavenCentral()
     jcenter()
     
-    maven {
-        url "https://mvnrepository.com/artifact/com.google.dagger/dagger"
-        url "https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler"
-        url "https://first.wpi.edu/FRC/roborio/maven/release"
-        url "https://devsite.ctr-electronics.com/maven/release/"
-    }
+    maven { url "https://mvnrepository.com/artifact/com.google.dagger/dagger" }
+    maven { url "https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler" }
+    maven { url "https://first.wpi.edu/FRC/roborio/maven/release" }
+    maven { url "https://devsite.ctr-electronics.com/maven/release/" }
     
     flatDir {
        dirs 'SeriouslyCommonLib/build/libs'
@@ -106,12 +104,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation "xbot.common:scl"
-    implementation group: 'log4j', name: 'log4j', version: '1.2.17'
-    implementation group: 'org.json', name:'json', version: '20201115'
+    implementation group: 'org.json', name:'json', version: '20220924'
 
-    implementation 'com.google.dagger:dagger:2.43.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.43.2'
+    implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+
+    implementation 'com.google.dagger:dagger:2.44.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.44.2'
 }
 
 wpi.sim.addGui().defaultEnabled = true
@@ -143,7 +143,7 @@ task('copyResources') {
             session(remotes.rio) {
                 // execute 'mkdir ~/449_resources', ignoreError: true
                 // execute 'mkdir /488Logs', ignoreError: true
-                put from: fileTree('SeriouslyCommonLib/lib/log4jConfig/log4j.xml'), into: '/home/lvuser/'
+                // put from: fileTree('SeriouslyCommonLib/lib/log4jConfig/log4j.xml'), into: '/home/lvuser/'
                 //execute ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", ignoreError: true
             }
         }
@@ -151,14 +151,14 @@ task('copyResources') {
 }
 
 checkstyle {
-    toolVersion = '8.7'
+    toolVersion = '10.6.0'
     configFile = file('SeriouslyCommonLib/xbotcheckstyle.xml')
 }
 
 task checkstyle(type: Checkstyle) {
     source 'src/main/java'
     configProperties.basedir = file('SeriouslyCommonLib')
-    
+
     // Empty classpath
     classpath = files()
 }
@@ -166,7 +166,7 @@ task checkstyle(type: Checkstyle) {
 test {
     reports {
         junitXml.required = true
-    }               
+    }
 }
 
 // force test project in SCL to compile so Dagger generation runs

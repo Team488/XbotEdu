@@ -1,6 +1,7 @@
 package xbot.edubot.basic_understanding;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
@@ -13,7 +14,7 @@ public class AObserveHowCommandsWork extends BaseCompetitionTest {
     @Test
     public void watchExample() {
         // Sets up some logging utilities - don't worry about this for now.
-        log = Logger.getLogger(AObserveHowCommandsWork.class);
+        log = LogManager.getLogger(AObserveHowCommandsWork.class);
         
         // This is a simple command that just prints out what methods are called on it.
         final ExampleCommand cmd = new ExampleCommand();
