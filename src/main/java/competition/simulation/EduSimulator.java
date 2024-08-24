@@ -23,6 +23,8 @@ public class EduSimulator {
     SimSwerveModule rearLeftSimModule;
     SimSwerveModule rearRightSimModule;
 
+    boolean forceDriverStationEnabledForUnitTests = false;
+
     @Inject
     public EduSimulator(PoseSubsystem pose, DriveSubsystem drive, SwerveDriveSubsystem swerve) {
         this.pose = pose;
@@ -36,6 +38,10 @@ public class EduSimulator {
         frontRightSimModule = new SimSwerveModule();
         rearLeftSimModule = new SimSwerveModule();
         rearRightSimModule = new SimSwerveModule();
+    }
+
+    public void setForceDriverStationEnabledForUnitTests(boolean forceDriverStationEnabledForUnitTests) {
+        this.forceDriverStationEnabledForUnitTests = forceDriverStationEnabledForUnitTests;
     }
 
     public void update() {
@@ -89,7 +95,7 @@ public class EduSimulator {
         rearLeftSimModule.setSteeringPower(swerve.rearLeftSteering.get());
         rearRightSimModule.setSteeringPower(swerve.rearRightSteering.get());
 
-        if (!DriverStation.isEnabled()) {
+        if (!DriverStation.isEnabled() && !forceDriverStationEnabledForUnitTests) {
             // if disabled, set voltages to 0.
             frontLeftSimModule.setDrivePower(0);
             frontRightSimModule.setDrivePower(0);

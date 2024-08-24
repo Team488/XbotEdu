@@ -59,13 +59,17 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
                 new Pose2d());
     }
 
-    public void move(double xVelocity, double yVelocity, double rotationPower) {
-        // Calculate the drive and steer values for each wheel
+    public void move(double xVelocity, double yVelocity, double radiansPerSecond) {
+        // This standard WPI library converts velocity/rotation goals
+        // into individual wheel angles and speeds.
         var swerveModuleStates = kinematics.toSwerveModuleStates(
-                new ChassisSpeeds(xVelocity, yVelocity, rotationPower)
+                new ChassisSpeeds(xVelocity, yVelocity, radiansPerSecond)
         );
-
         aKitLog.record("DesiredSwerveStates", swerveModuleStates);
+
+        // Note for mentors - all the code below this line in this method
+        // should be deleted before releasing to students, as it is the partial implementation
+        // of the swerve drive algorithm that students will be implementing.
 
         // Create another set of swerveModuleStates, optimizedSwerveModuleStates,
         // by calling SwerveModuleState.optimize(SwerveModuleState desiredState, Rotation2d currentAngle)
@@ -75,7 +79,6 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
         for (int i = 0; i < 4; i++) {
             optimizedSwerveModuleStates[i] = SwerveModuleState.optimize(swerveModuleStates[i], modulePositions[i].angle);
         }
-
 
         // Set the drive and steer values for each wheel
         frontLeftDrive.set(optimizedSwerveModuleStates[0].speedMetersPerSecond / maxVelocity);
@@ -115,18 +118,23 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
     }
 
     Rotation2d swerveDriveHeading = Rotation2d.fromDegrees(0);
+    Pose2d swerveDrivePose = new Pose2d();
+
+    public Pose2d getSwervePose() {
+        return swerveDrivePose;
+    }
 
     @Override
     public void periodic() {
-        Pose2d updatedPose = swerveDrivePoseEstimator.update(
+        swerveDrivePose = swerveDrivePoseEstimator.update(
                 swerveDriveHeading,
                 getSwerveModulePositions()
         );
 
         var speeds = kinematics.toChassisSpeeds(getSwerveModuleStates());
-        swerveDriveHeading = updatedPose.getRotation().plus(Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * 0.02));
+        swerveDriveHeading = swerveDrivePose.getRotation().plus(Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * 0.02));
 
-        aKitLog.record("CurrentPose", updatedPose);
+        aKitLog.record("CurrentPose", swerveDrivePose);
     }
 
     @Override
