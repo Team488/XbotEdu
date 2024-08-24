@@ -22,7 +22,7 @@ public class DebugSwerveCommand extends BaseCommand {
 
     @Override
     public void execute() {
-        swerve.move(SwerveDriveSubsystem.maxVelocity, 0, 0);
+        swerve.move(0, 0, 1);
     }
 
     @Override

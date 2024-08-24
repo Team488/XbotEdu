@@ -1,12 +1,13 @@
 package competition.subsystems.drive;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANSparkMax;
@@ -14,7 +15,6 @@ import xbot.common.injection.electrical_contract.DeviceInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.channels.IllegalBlockingModeException;
 
 @Singleton
 public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefreshable {
@@ -52,7 +52,11 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
                 new Translation2d(-0.5, -0.5)
         );
 
-        swerveDrivePoseEstimator = new SwerveDrivePoseEstimator()
+        swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(
+                kinematics,
+                Rotation2d.fromDegrees(0),
+                getSwerveModulePositions(),
+                new Pose2d());
     }
 
     public void move(double xVelocity, double yVelocity, double rotationPower) {
@@ -63,11 +67,21 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
 
         aKitLog.record("DesiredSwerveStates", swerveModuleStates);
 
+        // Create another set of swerveModuleStates, optimizedSwerveModuleStates,
+        // by calling SwerveModuleState.optimize(SwerveModuleState desiredState, Rotation2d currentAngle)
+        var optimizedSwerveModuleStates = new SwerveModuleState[4];
+        var modulePositions = getSwerveModulePositions();
+
+        for (int i = 0; i < 4; i++) {
+            optimizedSwerveModuleStates[i] = SwerveModuleState.optimize(swerveModuleStates[i], modulePositions[i].angle);
+        }
+
+
         // Set the drive and steer values for each wheel
-        frontLeftDrive.set(swerveModuleStates[0].speedMetersPerSecond / maxVelocity);
-        frontRightDrive.set(swerveModuleStates[1].speedMetersPerSecond / maxVelocity);
-        rearLeftDrive.set(swerveModuleStates[2].speedMetersPerSecond / maxVelocity);
-        rearRightDrive.set(swerveModuleStates[3].speedMetersPerSecond / maxVelocity);
+        frontLeftDrive.set(optimizedSwerveModuleStates[0].speedMetersPerSecond / maxVelocity);
+        frontRightDrive.set(optimizedSwerveModuleStates[1].speedMetersPerSecond / maxVelocity);
+        rearLeftDrive.set(optimizedSwerveModuleStates[2].speedMetersPerSecond / maxVelocity);
+        rearRightDrive.set(optimizedSwerveModuleStates[3].speedMetersPerSecond / maxVelocity);
 
         //frontLeftSteering.set(0.25);
         //frontRightSteering.set(0.25);
@@ -84,6 +98,15 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
         };
     }
 
+    public SwerveModulePosition[] getSwerveModulePositions() {
+        return new SwerveModulePosition[]{
+                new SwerveModulePosition(frontLeftDrive.getPosition(), Rotation2d.fromRadians(frontLeftSteering.getPosition())),
+                new SwerveModulePosition(frontRightDrive.getPosition(), Rotation2d.fromRadians(frontRightSteering.getPosition())),
+                new SwerveModulePosition(rearLeftDrive.getPosition(), Rotation2d.fromRadians(rearLeftSteering.getPosition())),
+                new SwerveModulePosition(rearRightDrive.getPosition(), Rotation2d.fromRadians(rearRightSteering.getPosition()))
+        };
+    }
+
     public SwerveModuleState buildSwerveModuleStateFromMotors(XCANSparkMax driveMotor, XCANSparkMax steeringMotor) {
         return new SwerveModuleState(
                 driveMotor.getVelocity(),
@@ -91,9 +114,19 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
         );
     }
 
+    Rotation2d swerveDriveHeading = Rotation2d.fromDegrees(0);
+
     @Override
     public void periodic() {
+        Pose2d updatedPose = swerveDrivePoseEstimator.update(
+                swerveDriveHeading,
+                getSwerveModulePositions()
+        );
 
+        var speeds = kinematics.toChassisSpeeds(getSwerveModuleStates());
+        swerveDriveHeading = updatedPose.getRotation().plus(Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * 0.02));
+
+        aKitLog.record("CurrentPose", updatedPose);
     }
 
     @Override
