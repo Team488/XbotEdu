@@ -32,7 +32,7 @@ public class SwerveDriveWithJoysticksCommandTest extends BaseCompetitionTest {
 
     private void driveForShortTime() {
         command.initialize();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             swerveDrive.refreshDataFrame();
             swerveDrive.periodic();
             simulator.simulateSwerve();

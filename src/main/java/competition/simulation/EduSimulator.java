@@ -95,6 +95,10 @@ public class EduSimulator {
         rearLeftSimModule.setSteeringPower(swerve.rearLeftSteering.get());
         rearRightSimModule.setSteeringPower(swerve.rearRightSteering.get());
 
+        // If the robot is disabled, the real robot would have all its outputs locked out by firmware.
+        // We emulate this by setting the simulated motor outputs to 0.
+        // (However, unit tests don't enable the robot, so we also listen to the flag "forceDriverStationEnabledForUnitTests"
+        // to allow the unit tests to run)
         if (!DriverStation.isEnabled() && !forceDriverStationEnabledForUnitTests) {
             // if disabled, set voltages to 0.
             frontLeftSimModule.setDrivePower(0);

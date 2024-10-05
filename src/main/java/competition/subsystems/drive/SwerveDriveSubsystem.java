@@ -30,8 +30,11 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
     public XCANSparkMax rearRightSteering;
 
     SwerveDriveKinematics kinematics;
-    public static double maxVelocity = 3;
+    public static double maxVelocityMetersPerSecond = 3;
     SwerveDrivePoseEstimator swerveDrivePoseEstimator;
+
+    Rotation2d swerveDriveHeading = Rotation2d.fromDegrees(0);
+    Pose2d swerveDrivePose = new Pose2d();
 
     @Inject
     public SwerveDriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory) {
@@ -61,36 +64,26 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
 
     public void move(double xVelocity, double yVelocity, double radiansPerSecond) {
         // This standard WPI library converts velocity/rotation goals
-        // into individual wheel angles and speeds.
-        var swerveModuleStates = kinematics.toSwerveModuleStates(
+        // into individual wheel angles and speeds. Don't change this code!
+        var desiredSwerveModuleStates = kinematics.toSwerveModuleStates(
                 new ChassisSpeeds(xVelocity, yVelocity, radiansPerSecond)
         );
-        aKitLog.record("DesiredSwerveStates", swerveModuleStates);
+        aKitLog.record("DesiredSwerveStates", desiredSwerveModuleStates);
+
+        // From this point on, you will need to:
+        // - get each swerve module pointing in the correct direction, according to the desiredSwerveModuleStates
+        // - gte each swerve module translating at the correct speed, according to the desiredSwerveModuleStates
 
         // Note for mentors - all the code below this line in this method
         // should be deleted before releasing to students, as it is the partial implementation
         // of the swerve drive algorithm that students will be implementing.
-
-        // Create another set of swerveModuleStates, optimizedSwerveModuleStates,
-        // by calling SwerveModuleState.optimize(SwerveModuleState desiredState, Rotation2d currentAngle)
-        var optimizedSwerveModuleStates = new SwerveModuleState[4];
-        var modulePositions = getSwerveModulePositions();
-
-        for (int i = 0; i < 4; i++) {
-            optimizedSwerveModuleStates[i] = SwerveModuleState.optimize(swerveModuleStates[i], modulePositions[i].angle);
-        }
-
-        // Set the drive and steer values for each wheel
-        frontLeftDrive.set(optimizedSwerveModuleStates[0].speedMetersPerSecond / maxVelocity);
-        frontRightDrive.set(optimizedSwerveModuleStates[1].speedMetersPerSecond / maxVelocity);
-        rearLeftDrive.set(optimizedSwerveModuleStates[2].speedMetersPerSecond / maxVelocity);
-        rearRightDrive.set(optimizedSwerveModuleStates[3].speedMetersPerSecond / maxVelocity);
-
-        //frontLeftSteering.set(0.25);
-        //frontRightSteering.set(0.25);
-        //rearLeftSteering.set(0.25);
-        //rearRightSteering.set(0.25);
     }
+
+    // ----------------------------------------------------------
+    // Code below here should not be changed; the simulator needs these functions to update the robot's position,
+    // or the code is required for other robot infrastructure reasons (e.g. refreshDataFrame).
+    // It's worth looking at these functions to understand some swerve aspects, but you don't need to modify them.
+    // ----------------------------------------------------------
 
     public SwerveModuleState[] getSwerveModuleStates() {
         return new SwerveModuleState[]{
@@ -116,9 +109,6 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
                 Rotation2d.fromRadians(steeringMotor.getPosition())
         );
     }
-
-    Rotation2d swerveDriveHeading = Rotation2d.fromDegrees(0);
-    Pose2d swerveDrivePose = new Pose2d();
 
     public Pose2d getSwervePose() {
         return swerveDrivePose;

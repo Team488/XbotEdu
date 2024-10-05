@@ -1,19 +1,21 @@
 package competition.subsystems.drive.commands;
 
+import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.SwerveDriveSubsystem;
 import xbot.common.command.BaseCommand;
 
 import javax.inject.Inject;
-import javax.naming.InitialContext;
 
 public class SwerveDriveWithJoysticksCommand extends BaseCommand {
 
     SwerveDriveSubsystem swerveDrive;
+    OperatorInterface oi;
 
     @Inject
-    public SwerveDriveWithJoysticksCommand(SwerveDriveSubsystem driveSubsystem) {
+    public SwerveDriveWithJoysticksCommand(SwerveDriveSubsystem driveSubsystem, OperatorInterface oi) {
         this.swerveDrive = driveSubsystem;
         this.addRequirements(driveSubsystem);
+        this.oi = oi;
     }
 
     @Override
@@ -32,6 +34,6 @@ public class SwerveDriveWithJoysticksCommand extends BaseCommand {
         // The drive has a maximum speed, you can get it via SwerveDriveSubsystem.maxVelocity.
         // For rotation, scale the values from "percentages" to "velocity in radians per second".
 
-        swerveDrive.move(SwerveDriveSubsystem.maxVelocity, 0, 0);
+        swerveDrive.move(0,0, 0);
     }
 }
