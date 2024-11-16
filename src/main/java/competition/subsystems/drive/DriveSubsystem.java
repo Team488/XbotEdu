@@ -24,9 +24,8 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public final XCANSparkMax frontLeft;
     public final XCANSparkMax frontRight;
-
+    boolean precisionMode=false;
     DoubleProperty dp;
-
     @Inject
     public DriveSubsystem(XCANSparkMax.XCANSparkMaxFactory sparkMaxFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
@@ -42,19 +41,24 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         pf.setPrefix(this);
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
+   public void tankDrive(double leftPower, double rightPower) {
+       if (this.precisionMode){
+           this.frontLeft.set(leftPower*.5);
+           this.frontRight.set(rightPower*.5);
+       } else{
+           this.frontLeft.set(leftPower);
+           this.frontRight.set(rightPower);
+       }
+    }
 
-    public void tankDrive(double leftPower, double rightPower) {
-        // You'll need to take these power values and assign them to all of the motors.
-        // As
-        // an example, here is some code that has the frontLeft motor to spin according
-        // to
-        // the value of leftPower:
-        frontLeft.set(leftPower);
-        frontRight.set(rightPower);
-
+    public boolean getPrecison(){
+        return precisionMode;
+    }
+    public void setPrecision(boolean activate){
+        precisionMode=activate;
     }
     @Override
-    public PIDManager getPositionalPid() {
+   public PIDManager getPositionalPid() {
         // TODO: Auto-generated method stub
         return null;
     }

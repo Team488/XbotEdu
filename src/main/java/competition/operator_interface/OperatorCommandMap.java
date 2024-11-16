@@ -3,6 +3,7 @@ package competition.operator_interface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -18,9 +19,12 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading)
+            SetRobotHeadingCommand resetHeading,
+            TogglePrecisionDriveCommand togglePrecision)
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(1).whileTrue(resetHeading);
+        operatorInterface.gamepad.getifAvailable(2).onTrue(togglePrecision);
     }
+
 }
