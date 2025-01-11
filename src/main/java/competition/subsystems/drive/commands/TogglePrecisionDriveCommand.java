@@ -16,20 +16,7 @@ public class TogglePrecisionDriveCommand extends BaseCommand {
 
     @Override
     public void initialize() {
-        // Here, you want to call the DriveSubsystem and tell it to change its precision
-        // mode.
-        // This means you'll need to add a new method into DriveSubsystem, and there are
-        // two
-        // major ways to do this:
-        // 1) Create something like getPrecisionMode() and setPrecisionMode() on the
-        // DriveSubsystem. Your
-        // command can read the current value, change it, and set it back into the
-        // subsystem.
-        // 2) Create a togglePrecisionMode() on the DriveSubsystem. The system will
-        // internally change
-        // the current mode.
-        // In all of these cases you'll need to have the mode somehow affect the
-        // TankDrive method.
+        drive.setPrecision(!drive.getPrecison());
     }
 
     @Override

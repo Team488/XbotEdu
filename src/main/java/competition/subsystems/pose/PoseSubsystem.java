@@ -20,6 +20,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
     public PoseSubsystem(XGyroFactory gyroFactory, PropertyFactory propManager, DriveSubsystem drive) {
         super(gyroFactory, propManager);
         this.drive = drive;
+
     }
 
     public double getPosition() {
