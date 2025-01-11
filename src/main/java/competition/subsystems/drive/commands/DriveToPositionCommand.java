@@ -6,11 +6,14 @@ import xbot.common.command.BaseCommand;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 
+import static java.lang.Math.abs;
+
 public class DriveToPositionCommand extends BaseCommand {
 
     DriveSubsystem drive;
     PoseSubsystem pose;
-
+    double goal;
+    double oldPostion;
     @Inject
     public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose) {
         this.drive = driveSubsystem;
@@ -18,6 +21,7 @@ public class DriveToPositionCommand extends BaseCommand {
     }
 
     public void setTargetPosition(double position) {
+        this.goal=position;
         // This method will be called by the test, and will give you a goal distance.
         // You'll need to remember this target position and use it in your calculations.
     }
@@ -29,6 +33,14 @@ public class DriveToPositionCommand extends BaseCommand {
 
     @Override
     public void execute() {
+        pose.getPosition();
+        double postionDiff= pose.getPosition()-oldPostion;
+        double range= this.goal-pose.getPosition();
+        double power= range*5 -postionDiff*50;
+        drive.tankDrive(power,power);
+        oldPostion= pose.getPosition();
+
+
         // Here you'll need to figure out a technique that:
         // - Gets the robot to move to the target position
         // - Hint: use pose.getPosition() to find out where you are
@@ -37,12 +49,17 @@ public class DriveToPositionCommand extends BaseCommand {
 
         // How you do this is up to you. If you get stuck, ask a mentor or student for
         // some hints!
-        drive.tankDrive(0.25,0.25);
-        pose.getPosition();
+
+        // get the postion at 5
     }
 
     @Override
     public boolean isFinished() {
+        double range = this.goal- pose.getPosition();
+        double postionDiff= pose.getPosition()- oldPostion;
+        if (abs(postionDiff) < .001 && range <.001 && range > 0) {
+            return true;
+        }
         // Modify this to return true once you have met your goal,
         // and you're moving fairly slowly (ideally stopped)
         return false;
