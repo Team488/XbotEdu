@@ -3,6 +3,7 @@ package competition.operator_interface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import competition.subsystems.drive.commands.DriveToPositionCommand;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -18,9 +19,13 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading)
+            SetRobotHeadingCommand resetHeading,
+            DriveToPositionCommand driveToPositionCommand)
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(1).whileTrue(resetHeading);
+
+        driveToPositionCommand.setTargetPosition(5);
+        driveToPositionCommand.includeOnSmartDashboard();
     }
 }
