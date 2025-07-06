@@ -47,6 +47,7 @@ public class Robot extends BaseRobot {
     public void simulationInit() {
         // teleport the robot to the field, bottom left ish pointing towards the middle
         getInjectorComponent().poseSubsystem().setCurrentPosition(2, 2);
+        getInjectorComponent().poseSubsystem().setCurrentHeading(0);
         super.simulationInit();
         // Automatically enables the robot; remove this line of code if you want the robot
         // to start in a disabled state (as it would on the field). However, this does save you the 
