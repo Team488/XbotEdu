@@ -18,9 +18,7 @@ public class TogglePrecisionDriveCommandTest extends BaseDriveTest {
 
         togglePrecisionCommand.initialize();
 
-        if (!togglePrecisionCommand.isFinished()) {
-            togglePrecisionCommand.execute();
-        }
+        togglePrecisionCommand.execute();
         gamepad.setLeftStick(new XYPair(0, 1.0));
         gamepad.setRightStick(new XYPair(0, 1.0));
         driveCommand.execute();
@@ -35,9 +33,8 @@ public class TogglePrecisionDriveCommandTest extends BaseDriveTest {
         this.assertDrive(-0.5, -0.5);
 
         togglePrecisionCommand.initialize();
-        if (!togglePrecisionCommand.isFinished()) {
-            togglePrecisionCommand.execute();
-        }
+        togglePrecisionCommand.execute();
+ 
         gamepad.setLeftStick(new XYPair(0, 1.0));
         gamepad.setRightStick(new XYPair(0, 1.0));
         driveCommand.execute();
