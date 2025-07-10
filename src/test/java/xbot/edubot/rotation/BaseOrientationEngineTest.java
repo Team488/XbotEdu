@@ -63,11 +63,11 @@ public class BaseOrientationEngineTest extends BaseDriveTest {
             System.out.printf("Time:%.1f sec, TurningPower:%.2f, Velocity:%.2f, Yaw:%.2f \n", (double) i * BASE_TIME_STEP,
                     getRotationPower(), engine.getVelocity(), engine.getOrientation());
 
+            currentRotationCommand.execute();
             if (currentRotationCommand.isFinished()) {
                 break;
             }
 
-            currentRotationCommand.execute();
         }
 
         assertTrue("Verify command reports successfully finished", currentRotationCommand.isFinished());
