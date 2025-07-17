@@ -129,12 +129,13 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
                 + getForwardPower()
             );
             
+            command.execute();
+            
             if(command.isFinished()) {
                 isFinished = true;
                 break;
             }
             
-            command.execute();
             
         }
         
