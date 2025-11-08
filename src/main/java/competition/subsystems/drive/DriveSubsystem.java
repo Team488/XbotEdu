@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
+import competition.operator_interface.OperatorCommandMap;
 import xbot.common.advantage.AKitLogger;
 import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.controls.actuators.XCANMotorController;
@@ -21,6 +22,8 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
     public final XCANMotorController frontRight;
 
     DoubleProperty dp;
+
+    boolean togglePrecisionButton = false;
 
     @Inject
     public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
@@ -42,9 +45,18 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         // according to the value of leftPower:
         frontLeft.setPower(leftPower);
         // TODO: Add code to set the right motors to the rightPower value.
-
+        frontRight.setPower(rightPower);
+        /// this.aKitLog.record("togglePrecisionButton", togglePrecisionButton);
+        /// System.out.println(togglePrecisionButton);
+        if (togglePrecisionButton == true) {
+            frontLeft.setPower(leftPower/2.0);
+            frontRight.setPower(rightPower/2.0);
+        }
     }
 
+    public void togglePrecisionDrive() {
+            togglePrecisionButton = !togglePrecisionButton;
+        }
 
     // You can ignore all of the code undearneat this comment -->
     // You won't have to touch it.
