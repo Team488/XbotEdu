@@ -16,7 +16,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
     private final DriveSubsystem drive;
 
     public double scalingFactorFromRotationsToMeters = 0.5;
-    
+
     @Inject
     public PoseSubsystem(XGyroFactory gyroFactory, PropertyFactory propManager, DriveSubsystem drive) {
         super(gyroFactory, propManager);
@@ -24,7 +24,7 @@ public class PoseSubsystem extends BasePoseSubsystem {
     }
 
     public double getPosition() {
-        return (getLeftDriveDistance() + getRightDriveDistance()) / 2.0; 
+        return (getLeftDriveDistance() + getRightDriveDistance()) / 2.0;
     }
 
     @Override

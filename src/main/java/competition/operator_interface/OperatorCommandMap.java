@@ -3,6 +3,7 @@ package competition.operator_interface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import competition.subsystems.drive.commands.TogglePrecisionDriveCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
@@ -24,12 +25,13 @@ public class OperatorCommandMap {
     @Inject
     public void setupMyCommands(
             OperatorInterface operatorInterface,
-            SetRobotHeadingCommand resetHeading
-            )
+            SetRobotHeadingCommand resetHeading,
+            TogglePrecisionDriveCommand togglePrecisionDriveCommand
+    )
     {
         resetHeading.setHeadingToApply(90);
         operatorInterface.gamepad.getifAvailable(XboxButton.Start).whileTrue(resetHeading);
-
+        operatorInterface.gamepad.getifAvailable(XboxButton.A).onTrue(togglePrecisionDriveCommand);
         // Add new button mappings here!
     }
 

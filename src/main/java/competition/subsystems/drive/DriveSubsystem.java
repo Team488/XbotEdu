@@ -22,6 +22,8 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     DoubleProperty dp;
 
+    public boolean isPrecisionModeActive = false;
+
     @Inject
     public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
@@ -36,13 +38,21 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
 
+    //A method that lets the outside user get if precision mode is on/off
+public boolean getPrecisionModeActive() {
+        return isPrecisionModeActive;
+}
+
     public void tankDrive(double leftPower, double rightPower) {
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
         // according to the value of leftPower:
+        if(isPrecisionModeActive) { //precision mode is on when its true & will divide by 2
+            leftPower = leftPower * 0.5;
+            rightPower = rightPower * 0.5;
+        }
         frontLeft.setPower(leftPower);
-        // TODO: Add code to set the right motors to the rightPower value.
-
+        frontRight.setPower(rightPower);
     }
 
 
@@ -76,6 +86,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
     public double getLeftTotalDistance() {
         // TODO: Auto-generated method stub
         return 0;
+
     }
 
     @Override
