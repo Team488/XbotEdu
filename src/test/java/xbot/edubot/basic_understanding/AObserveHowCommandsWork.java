@@ -7,7 +7,7 @@ import org.junit.Test;
 import competition.BaseCompetitionTest;
 import xbot.common.command.XScheduler;
 
-public class AObserveHowCommandsWork extends BaseCompetitionTest {
+public class    AObserveHowCommandsWork extends BaseCompetitionTest {
 
     protected Logger log;
     
