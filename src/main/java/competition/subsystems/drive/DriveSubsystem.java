@@ -22,6 +22,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     DoubleProperty dp;
 
+    public boolean isPrecisionModeOn = false;
     @Inject
     public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
@@ -36,13 +37,14 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
 
-    public void tankDrive(double leftPower, double rightPower) {
+    public double tankDrive(double leftPower, double rightPower) {
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
         // according to the value of leftPower:
         frontLeft.setPower(leftPower);
         // TODO: Add code to set the right motors to the rightPower value.
 
+        return leftPower;
     }
 
 

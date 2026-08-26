@@ -1,6 +1,7 @@
 package competition.subsystems.drive.commands;
 
 import javax.inject.Inject;
+import javax.swing.*;
 
 import xbot.common.command.BaseCommand;
 import competition.subsystems.drive.DriveSubsystem;
@@ -23,6 +24,12 @@ public class TurnLeft90DegreesCommand extends BaseCommand {
 
     @Override
     public void execute() {
-    }
 
+        if (pose.getCurrentHeading().getDegrees() == 90) {
+                drive.tankDrive(-10, -10);
+        }
+        else{
+            drive.tankDrive(2,2);
+        }
+    }
 }

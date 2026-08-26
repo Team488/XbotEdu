@@ -9,7 +9,22 @@ import competition.subsystems.pose.PoseSubsystem;
 public class DriveToPositionCommand extends BaseCommand {
 
     DriveSubsystem drive;
+
     PoseSubsystem pose;
+
+    double goalPosition = 0;
+
+    double d = 50;
+
+    double p = 50;
+
+    double previousPosition = 0;
+
+    double currentPosition = 0;
+
+    double speed = 0;
+
+
 
     @Inject
     public DriveToPositionCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose) {
@@ -17,9 +32,10 @@ public class DriveToPositionCommand extends BaseCommand {
         this.pose = pose;
     }
 
-    public void setTargetPosition(double position) {
+    public void setTargetPosition(double newGoalPosition) {
         // This method will be called by the test, and will give you a goal distance.
         // You'll need to remember this target position and use it in your calculations.
+        goalPosition = newGoalPosition;
     }
 
     @Override
@@ -34,18 +50,23 @@ public class DriveToPositionCommand extends BaseCommand {
         // - Hint: use pose.getPosition() to find out where you are
         // - Gets the robot stop (or at least be moving really really slowly) at the
         // target position
-
         // How you do this is up to you. If you get stuck, ask a mentor or student for
-        // some hints!
-        drive.tankDrive(0.25,0.25);
-        pose.getPosition();
-    }
+        // some hints.
+        currentPosition = pose.getPosition();
+        double error = goalPosition - currentPosition;
+        speed = currentPosition - previousPosition;
+        double power = p * error - d * speed;
+        drive.tankDrive(power,power);
 
+        previousPosition = currentPosition;
+    }
     @Override
-    public boolean isFinished() {
+    public boolean isFinished(
+    ) {
         // Modify this to return true once you have met your goal,
         // and you're moving fairly slowly (ideally stopped)
-        return false;
+        boolean atGoalPosition = Math.abs(currentPosition - goalPosition) < 0.01;
+        boolean notMoving = Math.abs(speed) <0.001;
+        return atGoalPosition && notMoving;
     }
-
 }
