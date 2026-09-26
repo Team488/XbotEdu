@@ -241,3 +241,12 @@ jacocoTestReport {
 
 // always generate the coverage report after the tests run
 test.finalizedBy { jacocoTestReport }
+
+task runVisualizer(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'xbot.edubot.linear.LinearTestVisualizer'
+    workingDir = file('build/jni/release')
+    
+    // Pass the native library path directly to the JVM
+    systemProperty "java.library.path", file('build/jni/release').absolutePath
+}
