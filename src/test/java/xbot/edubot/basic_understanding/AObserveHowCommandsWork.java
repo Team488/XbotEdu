@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import org.wpilib.command2.CommandScheduler;
 import xbot.common.command.XScheduler;
 
 public class AObserveHowCommandsWork extends BaseCompetitionTest {
@@ -26,7 +27,7 @@ public class AObserveHowCommandsWork extends BaseCompetitionTest {
         
         // There's many ways to start commands. Often, they are started by pressing a joystick
         // button, but for testing we can just force it to start.
-        cmd.schedule();
+        CommandScheduler.getInstance().schedule(cmd);
         
         // For a quick example, we'll just run the scheduler 10 times.
         // You should see the command do:

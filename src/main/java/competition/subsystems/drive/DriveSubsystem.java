@@ -9,8 +9,8 @@ import xbot.common.controls.actuators.XCANMotorController;
 import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
 import xbot.common.math.PIDManager;
 import xbot.common.math.XYPair;
-import xbot.common.properties.DoubleProperty;
-import xbot.common.properties.PropertyFactory;
+import org.wpilib.tunable.TunableDouble;
+import xbot.common.properties.TunableFactory;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 
 @Singleton
@@ -19,10 +19,10 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XCANMotorController frontLeft;
     public final XCANMotorController frontRight;
 
-    DoubleProperty dp;
+    TunableDouble dp;
 
     @Inject
-    public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
+    public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, TunableFactory tf) {
         log.info("Creating DriveSubsystem");
         // instantiate speed controllers and sensors here, save them as class members
 
@@ -31,8 +31,8 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         this.frontRight = motorControllerFactory
                 .create(new CANMotorControllerInfo("FrontRight", 2), this.getPrefix(), "FrontRight");
 
-        pf.setPrefix(this);
-        dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
+        tf.setPrefix(this);
+        dp = tf.createDouble("DriveSubsystem", 1.5);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
