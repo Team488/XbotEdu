@@ -195,41 +195,6 @@
               "controlsHeight": 85
             },
             {
-              "type": 9,
-              "title": "Swerve",
-              "controller": {
-                "sources": [
-                  {
-                    "type": "states",
-                    "logKey": "NT:/AdvantageKit/RealOutputs/DriveSubsystem/CurrentSwerveState",
-                    "logType": "SwerveModuleState[]",
-                    "visible": true,
-                    "options": {
-                      "color": "#ff0000",
-                      "arrangement": "0,1,2,3"
-                    }
-                  },
-                  {
-                    "type": "states",
-                    "logKey": "NT:/AdvantageKit/RealOutputs/DriveSubsystem/DesiredSwerveState",
-                    "logType": "SwerveModuleState[]",
-                    "visible": true,
-                    "options": {
-                      "color": "#0000ff",
-                      "arrangement": "0,1,2,3"
-                    }
-                  }
-                ],
-                "maxSpeed": 3.4,
-                "sizeX": 0.65,
-                "sizeY": 0.65,
-                "orientation": 1
-              },
-              "controllerUUID": "8tvgr5720hvoti5us5umldp8v3hirq1e",
-              "renderer": null,
-              "controlsHeight": 200
-            },
-            {
               "type": 4,
               "title": "Table",
               "controller": [
