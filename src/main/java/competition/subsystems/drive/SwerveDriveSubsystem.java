@@ -8,7 +8,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANMotorController;
 import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
@@ -24,7 +23,7 @@ import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 @Singleton
-public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefreshable {
+public class SwerveDriveSubsystem extends BaseSubsystem {
 
     public XCANMotorController frontLeftDrive;
     public XCANMotorController frontRightDrive;
@@ -94,7 +93,7 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
 
     // ----------------------------------------------------------
     // Code below here should not be changed; the simulator needs these functions to update the robot's position,
-    // or the code is required for other robot infrastructure reasons (e.g. refreshDataFrame).
+    // or the code is required for other robot infrastructure reasons.
     // It's worth looking at these functions to understand some swerve aspects, but you don't need to modify them.
     // ----------------------------------------------------------
 
@@ -138,20 +137,6 @@ public class SwerveDriveSubsystem extends BaseSubsystem implements DataFrameRefr
         swerveDriveHeading = swerveDrivePose.getRotation().plus(Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * 0.02));
 
         aKitLog.record("CurrentPose", swerveDrivePose);
-    }
-
-    @Override
-    public void refreshDataFrame() {
-        frontLeftDrive.refreshDataFrame();
-        frontRightDrive.refreshDataFrame();
-        rearLeftDrive.refreshDataFrame();
-        rearRightDrive.refreshDataFrame();
-
-        frontLeftSteering.refreshDataFrame();
-        frontRightSteering.refreshDataFrame();
-        rearLeftSteering.refreshDataFrame();
-        rearRightSteering.refreshDataFrame();
-
         aKitLog.record("CurrentSwerveState", getSwerveModuleStates());
     }
 }

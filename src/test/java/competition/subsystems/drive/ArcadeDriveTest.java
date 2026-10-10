@@ -6,7 +6,7 @@ import xbot.common.command.BaseCommand;
 import xbot.common.math.XYPair;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.drive.commands.ArcadeDriveWithJoysticksCommand;
-import edu.wpi.first.wpilibj.MockXboxControllerAdapter;
+import xbot.common.controls.sensors.mock_adapters.MockXboxControllerAdapter;
 
 public class ArcadeDriveTest extends BaseDriveTest {
 

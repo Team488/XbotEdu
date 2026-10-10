@@ -6,8 +6,6 @@ import competition.injection.components.DaggerRobotComponent;
 import competition.injection.components.DaggerSimulationComponent;
 import competition.operator_interface.OperatorCommandMap;
 import competition.simulation.EduSimulator;
-import competition.subsystems.drive.DriveSubsystem;
-import competition.subsystems.drive.SwerveDriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import xbot.common.command.BaseRobot;
@@ -26,9 +24,6 @@ public class Robot extends BaseRobot {
         getInjectorComponent().operatorCommandMap();
 
         simulator = getInjectorComponent().eduSimulator();
-
-        dataFrameRefreshables.add((DriveSubsystem)getInjectorComponent().driveSubsystem());
-        dataFrameRefreshables.add(getInjectorComponent().swerve());
     }
 
     protected BaseRobotComponent createDaggerComponent() {

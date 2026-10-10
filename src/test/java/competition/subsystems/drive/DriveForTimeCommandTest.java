@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import competition.subsystems.drive.commands.DriveForTimeCommand;
-import edu.wpi.first.wpilibj.MockTimer;
+import xbot.common.controls.sensors.mock_adapters.MockTimer;
 import xbot.common.command.BaseCommand;
 
 public class DriveForTimeCommandTest extends BaseDriveTest {

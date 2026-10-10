@@ -9,7 +9,7 @@ import org.junit.Before;
 import competition.BaseCompetitionTest;
 import competition.operator_interface.OperatorInterface;
 import competition.subsystems.pose.PoseSubsystem;
-import edu.wpi.first.wpilibj.MockXboxControllerAdapter;
+import xbot.common.controls.sensors.mock_adapters.MockXboxControllerAdapter;
 import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 public class BaseDriveTest extends BaseCompetitionTest {
