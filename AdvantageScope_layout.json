@@ -1,13 +1,13 @@
 {
   "hubs": [
     {
-      "x": 2183,
-      "y": 122,
-      "width": 1944,
-      "height": 1056,
+      "x": -7,
+      "y": -7,
+      "width": 1142,
+      "height": 718,
       "state": {
         "sidebar": {
-          "width": 447,
+          "width": 256,
           "expanded": [
             "/SmartDashboard/Scheduler",
             "/AdvantageKit",
@@ -15,7 +15,8 @@
             "/Preferences/PoseSubsystem",
             "/AdvantageKit/RealOutputs",
             "/AdvantageKit/RealOutputs/Simulator",
-            "/AdvantageKit/RealOutputs/PoseSubsystem"
+            "/AdvantageKit/RealOutputs/PoseSubsystem",
+            "/AdvantageKit/DriveSubsystem"
           ]
         },
         "tabs": {
@@ -26,7 +27,7 @@
               "title": "",
               "controller": null,
               "controllerUUID": "oz1a35znw28xtm7shst2zd8rkn9xlbx4",
-              "renderer": "#/",
+              "renderer": "",
               "controlsHeight": 0
             },
             {
@@ -40,21 +41,28 @@
                     "logType": "Pose2d",
                     "visible": true,
                     "options": {}
+                  },
+                  {
+                    "type": "ghost",
+                    "logKey": "NT:/AdvantageKit/RealOutputs/PoseSubsystem/Location",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {
+                      "color": "#00ff00"
+                    }
                   }
                 ],
-                "game": "2025 Field (Welded)",
-                "bumpers": "auto",
-                "origin": "blue",
+                "field": "FRC:2026 Field",
                 "orientation": 0,
-                "size": 30
+                "size": "large"
               },
               "controllerUUID": "icj9qq9dlv43tplcxoxfazr6gi5tdgwy",
               "renderer": null,
-              "controlsHeight": 99
+              "controlsHeight": 200
             },
             {
               "type": 3,
-              "title": "3d view",
+              "title": "3D Field",
               "controller": {
                 "sources": [
                   {
@@ -63,64 +71,28 @@
                     "logType": "Pose2d",
                     "visible": true,
                     "options": {
-                      "model": "2025 KitBot"
+                      "model": "2026 KitBot"
                     }
                   }
                 ],
-                "game": "2025 Field (Welded)",
-                "origin": "blue"
+                "game": "FRC:2026 Field"
               },
-              "controllerUUID": "ox2te7k1ktj76khhhqyowcgkihnqvl8g",
+              "controllerUUID": "5hk1ijjl6higzxcz0erog8m8qlqlvkic",
               "renderer": {
                 "cameraIndex": -1,
                 "orbitFov": 50,
                 "cameraPosition": [
-                  7.5749910818581405,
-                  2.1568059323597595,
-                  -9.217981603122656
+                  -0.2861734932165839,
+                  8.202202910015949,
+                  -1.7584505739210674
                 ],
                 "cameraTarget": [
-                  4.66037246179174,
-                  -1.205771551013326,
-                  -3.2358013142366957
+                  -0.4770464230520336,
+                  1.9548798934435963,
+                  0.6668199511616478
                 ]
               },
-              "controlsHeight": 239
-            },
-            {
-              "type": 5,
-              "title": "Console",
-              "controller": "NT:/AdvantageKit/RealOutputs/Console",
-              "controllerUUID": "ozof9k4e8dl2luiuh9xhhj8v9gctlo86",
-              "renderer": {
-                "highlight": false
-              },
-              "controlsHeight": 0
-            },
-            {
-              "type": 8,
-              "title": "Joysticks",
-              "controller": [
-                "Xbox Controller (White)",
-                "None",
-                "None",
-                "None",
-                "None",
-                "None"
-              ],
-              "controllerUUID": "1u4q4rm90j9iqu5413ggj7ujvehxj98t",
-              "renderer": null,
-              "controlsHeight": 85
-            },
-            {
-              "type": 4,
-              "title": "Table",
-              "controller": [
-                "NT:/SmartDashboard/Scheduler/Names"
-              ],
-              "controllerUUID": "yzrep59pzgsyuq2yd9m13gexfoe5h440",
-              "renderer": null,
-              "controlsHeight": 0
+              "controlsHeight": 200
             }
           ]
         }
@@ -128,5 +100,5 @@
     }
   ],
   "satellites": [],
-  "version": "4.1.1"
+  "version": "26.0.0"
 }
