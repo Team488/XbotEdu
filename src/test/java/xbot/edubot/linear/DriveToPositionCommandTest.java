@@ -75,7 +75,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
                     command.execute();
                     engine.step(getForwardPower());
 
-                    drive.refreshDataFrame();
+                    getInjectorComponent().dataFrameRegistry().refreshAll();
                     loops++;
                     setPosition(engine.getDistance());
                     
@@ -117,7 +117,7 @@ public class DriveToPositionCommandTest extends BaseDriveTest {
             
             // model change in position based on motor power
             setPosition(engine.getDistance());
-            drive.refreshDataFrame();
+            getInjectorComponent().dataFrameRegistry().refreshAll();
             
             System.out.println("Loop: " 
                 + i 

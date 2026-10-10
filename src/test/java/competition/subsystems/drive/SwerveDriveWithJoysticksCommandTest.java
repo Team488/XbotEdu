@@ -5,7 +5,7 @@ import competition.operator_interface.OperatorInterface;
 import competition.simulation.EduSimulator;
 import competition.subsystems.drive.commands.SwerveDriveWithJoysticksCommand;
 import competition.subsystems.pose.PoseSubsystem;
-import edu.wpi.first.wpilibj.MockXboxControllerAdapter;
+import xbot.common.controls.sensors.mock_adapters.MockXboxControllerAdapter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ public class SwerveDriveWithJoysticksCommandTest extends BaseCompetitionTest {
     private void driveForShortTime() {
         command.initialize();
         for (int i = 0; i < 100; i++) {
-            swerveDrive.refreshDataFrame();
+            getInjectorComponent().dataFrameRegistry().refreshAll();
             swerveDrive.periodic();
             simulator.simulateSwerve();
             command.execute();

@@ -5,7 +5,6 @@ import javax.inject.Singleton;
 
 import competition.electrical_contract.ElectricalContract;
 import xbot.common.advantage.AKitLogger;
-import xbot.common.advantage.DataFrameRefreshable;
 import xbot.common.controls.actuators.XCANMotorController;
 import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
 import xbot.common.math.PIDManager;
@@ -15,7 +14,7 @@ import xbot.common.properties.PropertyFactory;
 import xbot.common.subsystems.drive.BaseDriveSubsystem;
 
 @Singleton
-public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefreshable {
+public class DriveSubsystem extends BaseDriveSubsystem {
 
     public final XCANMotorController frontLeft;
     public final XCANMotorController frontRight;
@@ -92,10 +91,5 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public void periodic() {
         aKitLog.setLogLevel(AKitLogger.LogLevel.DEBUG);
-    }
-
-    public void refreshDataFrame() {
-        frontLeft.refreshDataFrame();
-        frontRight.refreshDataFrame();
     }
 }
