@@ -7,7 +7,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import competition.subsystems.drive.BaseDriveTest;
-import edu.wpi.first.math.MathUtil;
 import xbot.common.command.BaseCommand;
 import competition.simulation.RotationEngine;
 
@@ -119,10 +118,10 @@ public class BaseOrientationEngineTest extends BaseDriveTest {
     private double getRotationPower() {
         // read from drive wheels, make a turning function
         // left pair
-        double l1 = MathUtil.clamp(drive.frontLeft.getPower(), -1, 1);
+        double l1 = Math.clamp(drive.frontLeft.getPower(), -1.0, 1.0);
 
         // right pair
-        double r1 = MathUtil.clamp(drive.frontRight.getPower(), -1, 1);
+        double r1 = Math.clamp(drive.frontRight.getPower(), -1.0, 1.0);
 
         // left turns are positive. So right power is positive, left power negative.
         return (r1 - l1) / 2;

@@ -5,10 +5,10 @@ import javax.inject.Singleton;
 
 import competition.subsystems.drive.DriveSubsystem;
 import xbot.common.controls.sensors.XGyro.XGyroFactory;
-import xbot.common.properties.PropertyFactory;
+import xbot.common.properties.TunableFactory;
 import xbot.common.subsystems.pose.BasePoseSubsystem;
 
-import static edu.wpi.first.units.Units.Rotations;
+import static org.wpilib.units.Units.Rotations;
 
 @Singleton
 public class PoseSubsystem extends BasePoseSubsystem {
@@ -18,8 +18,8 @@ public class PoseSubsystem extends BasePoseSubsystem {
     public double scalingFactorFromRotationsToMeters = 0.5;
     
     @Inject
-    public PoseSubsystem(XGyroFactory gyroFactory, PropertyFactory propManager, DriveSubsystem drive) {
-        super(gyroFactory, propManager);
+    public PoseSubsystem(XGyroFactory gyroFactory, TunableFactory tunableFactory, DriveSubsystem drive) {
+        super(gyroFactory, tunableFactory);
         this.drive = drive;
     }
 
