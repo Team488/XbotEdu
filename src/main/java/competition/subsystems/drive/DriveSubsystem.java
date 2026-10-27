@@ -1,3 +1,4 @@
+
 package competition.subsystems.drive;
 
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
     public final XCANMotorController frontRight;
 
     DoubleProperty dp;
-
+    public boolean isPrecisionModeOn = false;
     @Inject
     public DriveSubsystem(XCANMotorController.XCANMotorControllerFactory motorControllerFactory, ElectricalContract electricalContract, PropertyFactory pf) {
         log.info("Creating DriveSubsystem");
@@ -34,7 +35,6 @@ public class DriveSubsystem extends BaseDriveSubsystem {
         pf.setPrefix(this);
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
-
     public void tankDrive(double leftPower, double rightPower) {
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
@@ -68,7 +68,7 @@ public class DriveSubsystem extends BaseDriveSubsystem {
 
     @Override
     public void move(XYPair translate, double rotate) {
-       throw new RuntimeException("Not yet implemented");
+        throw new RuntimeException("Not yet implemented");
     }
 
     @Override
