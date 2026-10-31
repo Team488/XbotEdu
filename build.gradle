@@ -250,3 +250,10 @@ task runVisualizer(type: JavaExec) {
     // Pass the native library path directly to the JVM
     systemProperty "java.library.path", file('build/jni/release').absolutePath
 }
+
+task runRotationVisualizer(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'xbot.edubot.rotation.RotationTestVisualizer'
+    workingDir = file('build/jni/release')
+    systemProperty "java.library.path", file('build/jni/release').absolutePath
+}

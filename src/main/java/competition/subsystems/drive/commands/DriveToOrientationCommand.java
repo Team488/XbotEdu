@@ -2,43 +2,70 @@ package competition.subsystems.drive.commands;
 
 import javax.inject.Inject;
 
+import competition.subsystems.pose.PoseSubsystem;
+import org.opencv.core.Mat;
 import xbot.common.command.BaseCommand;
 import competition.subsystems.drive.DriveSubsystem;
 
 public class DriveToOrientationCommand extends BaseCommand {
 
     DriveSubsystem drive;
+    PoseSubsystem pose;
+
+    boolean finished;
+
+    double target     = 0;
+    double prevError  = 0;
+    double error      = 0;
 
     @Inject
-    public DriveToOrientationCommand(DriveSubsystem driveSubsystem) {
+    public DriveToOrientationCommand(DriveSubsystem driveSubsystem, PoseSubsystem pose) {
         this.drive = driveSubsystem;
+        this.pose = pose;
     }
 
     public void setTargetHeading(double heading) {
-        // This method will be called by the test, and will give you a goal heading.
-        // You'll need to remember this target position and use it in your calculations.
+        target = heading;
+        prevError = target - pose.getCurrentHeading().getDegrees();
+        error = prevError;
     }
 
     @Override
-    public void initialize() {
-        // If you have some one-time setup, do it here.
-    }
+    public void initialize() {}
 
     @Override
     public void execute() {
-        // Here you'll need to figure out a technique that:
-        // - Gets the robot to turn to the target orientation
-        // - Gets the robot stop (or at least be moving really really slowly) at the
-        // target position
+        if (finished) return;
+        double dt = 0.02;
+        double current = pose.getCurrentHeading().getDegrees();
 
-        // How you do this is up to you. If you get stuck, ask a mentor or student for
-        // some hints!
+        double error = Math.IEEEremainder(target - current, 360.0);
+        error += error * dt;
+
+        double errorDelta = Math.IEEEremainder(
+                error - prevError,
+                360.0
+        );
+
+        double derivative = errorDelta / dt;
+        double power = 0.5 * error + 0.05 * derivative;
+
+        power = Math.max(-1.0, Math.min(1.0, power));
+
+        drive.tankDrive(-power, power);
+        prevError = error;
+
+        if (Math.abs(error) < 0.3) {
+            drive.tankDrive(0, 0);
+            finished = true;
+        }
     }
 
     @Override
     public boolean isFinished() {
-        // Modify this to return true once you have met your goal,
-        // and you're moving fairly slowly (ideally stopped)
-        return false;
+        if (Math.abs(pose.getCurrentHeadingAngularVelocity()) > 0.0)
+            return false;
+
+        return finished;
     }
 }
