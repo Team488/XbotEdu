@@ -5,6 +5,7 @@ import competition.subsystems.drive.SwerveDriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import xbot.common.controls.actuators.XCANMotorController;
 import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 import javax.inject.Inject;
@@ -13,15 +14,23 @@ import javax.inject.Singleton;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 @Singleton
 public class EduSimulator {
+
+    // Distance between the left and right wheels. Used to work out how fast each side
+    // has to move for the robot to turn as fast as the RotationEngine says it is.
+    private static final double trackWidthMeters = 0.6;
+    private static final double loopPeriodSeconds = 0.02;
 
     PoseSubsystem pose;
     DriveSubsystem drive;
     LinearEngine linearEngine;
     RotationEngine rotationEngine;
-
+    // How much further the right wheels have travelled than the robot's center because of turning
+    // (the left wheels have travelled this much less)
+    double turningArcMeters = 0;
 
     SwerveDriveSubsystem swerve;
     SimSwerveModule frontLeftSimModule;
@@ -56,32 +65,49 @@ public class EduSimulator {
     }
 
     private void simulateDrive() {
+        double leftPower = getDrivePower(drive.frontLeft);
+        double rightPower = getDrivePower(drive.frontRight);
+
         // Translation
-        double chassisTotalLinearDistanceTravelled = linearEngine.step(getForwardPower());
-        addDistanceToEncoders(chassisTotalLinearDistanceTravelled);
+        linearEngine.step((leftPower + rightPower) / 2.0);
 
         //Rotation
-        rotationEngine.setPower(getRotationalPower());
+        rotationEngine.setPower((rightPower - leftPower) / 2.0);
         rotationEngine.step();
 
         pose.setCurrentHeading(rotationEngine.getOrientation());
+
+        // Turning makes the right wheels go faster than the robot's center and the left wheels slower.
+        // The RotationEngine reports its velocity in degrees per loop.
+        double turnRadiansPerSecond = Math.toRadians(rotationEngine.getVelocity()) / loopPeriodSeconds;
+        double turnWheelSpeed = turnRadiansPerSecond * trackWidthMeters / 2.0;
+        turningArcMeters += turnWheelSpeed * loopPeriodSeconds;
+
+        // Feed the motion back into the motors, so they report position and velocity like real ones
+        double distance = linearEngine.getDistance();
+        double velocity = linearEngine.getVelocity();
+        updateMotor(drive.frontLeft, distance - turningArcMeters, velocity - turnWheelSpeed);
+        updateMotor(drive.frontRight, distance + turningArcMeters, velocity + turnWheelSpeed);
     }
 
-    private double getForwardPower() {
-        return (MathUtil.clamp(drive.frontLeft.getPower(), -1, 1) + MathUtil.clamp(drive.frontRight.getPower(), -1, 1))  / 2.0;
+    private void updateMotor(XCANMotorController motor, double distanceMeters, double velocityMetersPerSecond) {
+        double metersPerRotation = pose.scalingFactorFromRotationsToMeters;
+        ((MockCANMotorController)motor).setPosition(Rotations.of(distanceMeters / metersPerRotation));
+        ((MockCANMotorController)motor).setVelocity(RotationsPerSecond.of(velocityMetersPerSecond / metersPerRotation));
     }
 
-    private double getRotationalPower() {
-        return (MathUtil.clamp(drive.frontRight.getPower(), -1, 1) - MathUtil.clamp(drive.frontLeft.getPower(), -1, 1)) / 2.0;
-    }
-
-    private void addDistanceToEncoders(double distance) {
-        ((MockCANMotorController)drive.frontLeft).setPosition(Rotations.of(distance));
-        ((MockCANMotorController)drive.frontRight).setPosition(Rotations.of(distance));
+    private double getDrivePower(XCANMotorController motor) {
+        // If the robot is disabled, the real robot would have all its outputs locked out by firmware.
+        // (Unit tests don't enable the robot, so they can set forceDriverStationEnabledForUnitTests instead.)
+        if (!DriverStation.isEnabled() && !forceDriverStationEnabledForUnitTests) {
+            return 0;
+        }
+        return MathUtil.clamp(motor.getPower(), -1, 1);
     }
 
     public void reset() {
         linearEngine.reset();
+        turningArcMeters = 0;
     }
 
 
