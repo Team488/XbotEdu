@@ -26,6 +26,11 @@ pluginManagement {
     }
 }
 
+plugins {
+    // Lets Gradle download the Java 25 toolchain when it isn't installed locally (e.g. on CI agents)
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
 // Composite build support for local SeriouslyCommonLib development
 // Only activates when explicitly requested via -DuseLocalCommonLib=true or USE_LOCAL_COMMON_LIB=true
 def localCommonLibPath = file('../SeriouslyCommonLib')
