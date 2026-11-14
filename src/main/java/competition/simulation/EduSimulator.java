@@ -3,16 +3,15 @@ package competition.simulation;
 import competition.subsystems.drive.DriveSubsystem;
 import competition.subsystems.drive.SwerveDriveSubsystem;
 import competition.subsystems.pose.PoseSubsystem;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
+import org.wpilib.driverstation.RobotState;
 import xbot.common.controls.actuators.mock_adapters.MockCANMotorController;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Rotations;
+import static org.wpilib.units.Units.Radians;
+import static org.wpilib.units.Units.RadiansPerSecond;
+import static org.wpilib.units.Units.Rotations;
 
 @Singleton
 public class EduSimulator {
@@ -68,11 +67,11 @@ public class EduSimulator {
     }
 
     private double getForwardPower() {
-        return (MathUtil.clamp(drive.frontLeft.getPower(), -1, 1) + MathUtil.clamp(drive.frontRight.getPower(), -1, 1))  / 2.0;
+        return (Math.clamp(drive.frontLeft.getPower(), -1.0, 1.0) + Math.clamp(drive.frontRight.getPower(), -1.0, 1.0))  / 2.0;
     }
 
     private double getRotationalPower() {
-        return (MathUtil.clamp(drive.frontRight.getPower(), -1, 1) - MathUtil.clamp(drive.frontLeft.getPower(), -1, 1)) / 2.0;
+        return (Math.clamp(drive.frontRight.getPower(), -1.0, 1.0) - Math.clamp(drive.frontLeft.getPower(), -1.0, 1.0)) / 2.0;
     }
 
     private void addDistanceToEncoders(double distance) {
@@ -109,7 +108,7 @@ public class EduSimulator {
         // We emulate this by setting the simulated motor outputs to 0.
         // (However, unit tests don't enable the robot, so we also listen to the flag "forceDriverStationEnabledForUnitTests"
         // to allow the unit tests to run)
-        if (!DriverStation.isEnabled() && !forceDriverStationEnabledForUnitTests) {
+        if (!RobotState.isEnabled() && !forceDriverStationEnabledForUnitTests) {
             // if disabled, set voltages to 0.
             frontLeftSimModule.setDrivePower(0);
             frontRightSimModule.setDrivePower(0);

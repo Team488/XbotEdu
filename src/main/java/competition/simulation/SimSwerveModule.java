@@ -1,8 +1,8 @@
 package competition.simulation;
 
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import org.wpilib.math.system.DCMotor;
+import org.wpilib.math.system.Models;
+import org.wpilib.simulation.FlywheelSim;
 import xbot.common.math.MathUtils;
 
 public class SimSwerveModule {
@@ -19,8 +19,8 @@ public class SimSwerveModule {
 
     public SimSwerveModule() {
         var motor = DCMotor.getNEO(1);
-        driveMotor = new FlywheelSim(LinearSystemId.createFlywheelSystem(motor, 1, 6.75), motor, 0.025);
-        steeringMotor = new FlywheelSim(LinearSystemId.createFlywheelSystem(motor, 1, 150.0 / 7.0), motor, 0.004);
+        driveMotor = new FlywheelSim(Models.flywheelFromPhysicalConstants(motor, 1, 6.75), motor, 0.025);
+        steeringMotor = new FlywheelSim(Models.flywheelFromPhysicalConstants(motor, 1, 150.0 / 7.0), motor, 0.004);
     }
 
     public void setDrivePower(double power) {
@@ -37,7 +37,7 @@ public class SimSwerveModule {
         steeringMotor.update(0.02);
 
         // Figure out how much the steering module has turned
-        double angleDiffRad = steeringMotor.getAngularVelocityRadPerSec() * loopPeriodSecs;
+        double angleDiffRad = steeringMotor.getAngularVelocity() * loopPeriodSecs;
         turnRelativePositionRad += angleDiffRad;
         turnAbsolutePositionRad += angleDiffRad;
         // Keep the absolute position within 0 to 2pi, as this mimics how the motors report absolute position
@@ -49,7 +49,7 @@ public class SimSwerveModule {
         }
 
         // Calculate velocity
-        driveVelocityRad = driveMotor.getAngularVelocityRadPerSec();
+        driveVelocityRad = driveMotor.getAngularVelocity();
 
         // Calculate accumulated position
         drivePositionRad += driveVelocityRad * loopPeriodSecs;

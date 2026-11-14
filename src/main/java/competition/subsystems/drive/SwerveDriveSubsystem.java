@@ -1,13 +1,13 @@
 package competition.subsystems.drive;
 
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+import org.wpilib.math.estimator.SwerveDrivePoseEstimator;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.math.geometry.Translation2d;
+import org.wpilib.math.kinematics.ChassisVelocities;
+import org.wpilib.math.kinematics.SwerveDriveKinematics;
+import org.wpilib.math.kinematics.SwerveModulePosition;
+import org.wpilib.math.kinematics.SwerveModuleVelocity;
 import xbot.common.command.BaseSubsystem;
 import xbot.common.controls.actuators.XCANMotorController;
 import xbot.common.injection.electrical_contract.CANMotorControllerInfo;
@@ -16,11 +16,11 @@ import xbot.common.injection.electrical_contract.DeviceInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.Rotation;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static org.wpilib.units.Units.Meters;
+import static org.wpilib.units.Units.MetersPerSecond;
+import static org.wpilib.units.Units.Radians;
+import static org.wpilib.units.Units.Rotation;
+import static org.wpilib.units.Units.RotationsPerSecond;
 
 @Singleton
 public class SwerveDriveSubsystem extends BaseSubsystem {
@@ -77,8 +77,8 @@ public class SwerveDriveSubsystem extends BaseSubsystem {
     public void move(double xVelocity, double yVelocity, double radiansPerSecond) {
         // This standard WPI library converts velocity/rotation goals
         // into individual wheel angles and speeds. Don't change this code!
-        var desiredSwerveModuleStates = kinematics.toSwerveModuleStates(
-                new ChassisSpeeds(xVelocity, yVelocity, radiansPerSecond)
+        var desiredSwerveModuleStates = kinematics.toSwerveModuleVelocities(
+                new ChassisVelocities(xVelocity, yVelocity, radiansPerSecond)
         );
         aKitLog.record("DesiredSwerveStates", desiredSwerveModuleStates);
 
@@ -97,8 +97,8 @@ public class SwerveDriveSubsystem extends BaseSubsystem {
     // It's worth looking at these functions to understand some swerve aspects, but you don't need to modify them.
     // ----------------------------------------------------------
 
-    public SwerveModuleState[] getSwerveModuleStates() {
-        return new SwerveModuleState[]{
+    public SwerveModuleVelocity[] getSwerveModuleStates() {
+        return new SwerveModuleVelocity[]{
                 buildSwerveModuleStateFromMotors(frontLeftDrive, frontLeftSteering),
                 buildSwerveModuleStateFromMotors(frontRightDrive, frontRightSteering),
                 buildSwerveModuleStateFromMotors(rearLeftDrive, rearLeftSteering),
@@ -115,8 +115,8 @@ public class SwerveDriveSubsystem extends BaseSubsystem {
         };
     }
 
-    public SwerveModuleState buildSwerveModuleStateFromMotors(XCANMotorController driveMotor, XCANMotorController steeringMotor) {
-        return new SwerveModuleState(
+    public SwerveModuleVelocity buildSwerveModuleStateFromMotors(XCANMotorController driveMotor, XCANMotorController steeringMotor) {
+        return new SwerveModuleVelocity(
                 driveMotor.getVelocity().in(RotationsPerSecond) * metersPerRotation,
                 Rotation2d.fromRadians(steeringMotor.getPosition().in(Radians))
         );
@@ -133,8 +133,8 @@ public class SwerveDriveSubsystem extends BaseSubsystem {
                 getSwerveModulePositions()
         );
 
-        var speeds = kinematics.toChassisSpeeds(getSwerveModuleStates());
-        swerveDriveHeading = swerveDrivePose.getRotation().plus(Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * 0.02));
+        var speeds = kinematics.toChassisVelocities(getSwerveModuleStates());
+        swerveDriveHeading = swerveDrivePose.getRotation().plus(Rotation2d.fromRadians(speeds.omega * 0.02));
 
         aKitLog.record("CurrentPose", swerveDrivePose);
         aKitLog.record("CurrentSwerveState", getSwerveModuleStates());

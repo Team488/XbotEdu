@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import org.wpilib.command2.CommandScheduler;
 import xbot.common.command.XScheduler;
 
 public class CObserveFightingCommands extends BaseCompetitionTest {
@@ -23,7 +24,7 @@ public class CObserveFightingCommands extends BaseCompetitionTest {
         cmdb.setRunsWhenDisabled(true);
         
         // CommandA starts. 
-        cmda.schedule();
+        CommandScheduler.getInstance().schedule(cmda);
         
         XScheduler scheduler = new XScheduler();
         
@@ -36,7 +37,7 @@ public class CObserveFightingCommands extends BaseCompetitionTest {
         // that CommandA is no longer writing messages to the console - CommandB
         // has interrupted it and now has control!
         
-        cmdb.schedule();
+        CommandScheduler.getInstance().schedule(cmdb);
         
         for (int i = 0; i < 5; i++) {
             log.info("SCHEDULER ON STEP " + (i+4));

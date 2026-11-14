@@ -10,7 +10,7 @@ public class CommandA extends BaseCommand {
     
     @Inject
     public CommandA(ExampleSubsystem exampleSubsystem) {
-        requires(exampleSubsystem);
+        addRequirements(exampleSubsystem);
         this.exampleSubsystem = exampleSubsystem;
     }
     

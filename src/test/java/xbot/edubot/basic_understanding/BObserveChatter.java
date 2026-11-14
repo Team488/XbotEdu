@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import competition.BaseCompetitionTest;
+import org.wpilib.command2.CommandScheduler;
 import xbot.common.command.XScheduler;
 
 public class BObserveChatter extends BaseCompetitionTest {
@@ -17,7 +18,7 @@ public class BObserveChatter extends BaseCompetitionTest {
         
         ChatCommandThatEnds cmd = new ChatCommandThatEnds();
         cmd.setRunsWhenDisabled(true);
-        cmd.schedule();
+        CommandScheduler.getInstance().schedule(cmd);
         XScheduler scheduler = new XScheduler();
         
         for (int i = 0; i < 100; i++) {

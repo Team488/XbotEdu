@@ -3,12 +3,12 @@ package competition.operator_interface;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import org.wpilib.tunable.Tunables;
+import org.wpilib.command2.InstantCommand;
 
 import competition.simulation.EduSimulator;
 import competition.subsystems.drive.commands.DriveToPositionCommand;
-import xbot.common.controls.sensors.XXboxController.XboxButton;
+import org.wpilib.driverstation.XboxController.Button;
 import xbot.common.subsystems.pose.commands.SetRobotHeadingCommand;
 
 /**
@@ -28,7 +28,7 @@ public class OperatorCommandMap {
             )
     {
         resetHeading.setHeadingToApply(90);
-        operatorInterface.gamepad.getifAvailable(XboxButton.Start).whileTrue(resetHeading);
+        operatorInterface.gamepad.getXboxButtonIfAvailable(Button.MENU).whileTrue(resetHeading);
 
         // Add new button mappings here!
     }
@@ -37,7 +37,7 @@ public class OperatorCommandMap {
     @Inject
     public void setupDriveToPositionTesting(DriveToPositionCommand driveToPositionCommand, EduSimulator simulator) {
         // let's teleport the robot back to the start each time the button is pressed so repeated testing is easier
-        SmartDashboard.putData("DriveToPosition",
+        Tunables.publish("DriveToPosition",
                 new InstantCommand(() -> {
                     simulator.reset();
                 }).andThen(driveToPositionCommand));

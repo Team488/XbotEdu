@@ -4,7 +4,7 @@ pluginManagement {
     repositories {
         mavenLocal()
         gradlePluginPortal()
-        String frcYear = '2025'
+        String frcYear = '2027_alpha7'
         File frcHome
         if (OperatingSystem.current().isWindows()) {
             String publicFolder = System.getenv('PUBLIC')
@@ -24,6 +24,11 @@ pluginManagement {
             url frcHomeMaven
         }
     }
+}
+
+plugins {
+    // Lets Gradle download the Java 25 toolchain when it isn't installed locally (e.g. on CI agents)
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
 // Composite build support for local SeriouslyCommonLib development
